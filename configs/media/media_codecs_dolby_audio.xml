@@ -51,5 +51,15 @@
             </Type>
         </MediaCodec>
         <!-- DOLBY_UDC END -->
+        <!-- DOLBY_AC4 -->
+        <MediaCodec name="c2.dolby.ac4.decoder" >
+            <Type name="audio/ac4">
+                <Alias name="OMX.dolby.ac4.decoder" />
+                <Limit name="channel-count" max="2" />
+                <Limit name="sample-rate" ranges="48000" />
+                <Limit name="bitrate" range="16000-2688000" />
+            </Type>
+        <!-- DOLBY_AC4 END -->
+        </MediaCodec>
     </Decoders>
 </Included>
