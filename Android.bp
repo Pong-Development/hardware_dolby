@@ -130,7 +130,6 @@ cc_prebuilt_library_shared {
         },
     },
     compile_multilib: "64",
-    relative_install_path: "vendor/lib64",
     prefer: true,
     soc_specific: true,
 }
