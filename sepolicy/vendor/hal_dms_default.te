@@ -8,5 +8,6 @@ allow hal_dms_default vendor_data_file:file { rw_file_perms create unlink };
 allow hal_dms_default vendor_data_file:dir { rw_file_perms add_name remove_name };
 allow hal_dms_default mediacodec:binder call;
 allow hal_dms_default property_socket:sock_file write;
+allow hal_dms_default init:unix_stream_socket connectto;
 binder_call(hal_dms_default, hal_audio_default)
 binder_call(hal_dms_default, platform_app)
