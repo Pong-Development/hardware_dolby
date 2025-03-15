@@ -4,7 +4,7 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="co.aospa.dolby"
+    package="co.aospa.dolby.xiaomi"
     android:sharedUserId="android.uid.system">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -12,8 +12,7 @@
     <application
         android:icon="@mipmap/ic_launcher"
         android:allowBackup="false"
-	android:label="@string/dolby_title"
-	android:enableOnBackInvokedCallback="true"
+        android:label="@string/dolby_title"
         android:persistent="true">
 
         <receiver
@@ -45,7 +44,7 @@
             <meta-data android:name="com.android.settings.category"
                        android:value="com.android.settings.category.ia.sound" />
             <meta-data android:name="com.android.settings.summary_uri"
-                       android:value="content://co.aospa.dolby.summary/dolby" />
+                       android:value="content://co.aospa.dolby.xiaomi.summary/dolby" />
         </activity>
 
         <activity
@@ -72,7 +71,7 @@
 
         <provider
             android:name=".SummaryProvider"
-            android:authorities="co.aospa.dolby.summary">
+            android:authorities="co.aospa.dolby.xiaomi.summary">
         </provider>
 
     </application>

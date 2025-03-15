@@ -28,11 +28,11 @@
             android:title="@string/dolby_preset">
             <intent
                 android:action="android.intent.action.MAIN"
-                android:targetPackage="co.aospa.dolby"
-                android:targetClass="co.aospa.dolby.geq.EqualizerActivity" />
+                android:targetPackage="co.aospa.dolby.xiaomi"
+                android:targetClass="co.aospa.dolby.xiaomi.geq.EqualizerActivity" />
         </Preference>
 
-        <co.aospa.dolby.preference.DolbyIeqPreference
+        <co.aospa.dolby.xiaomi.preference.DolbyIeqPreference
             android:key="dolby_ieq"
             android:entries="@array/dolby_ieq_entries"
             android:entryValues="@array/dolby_ieq_values"

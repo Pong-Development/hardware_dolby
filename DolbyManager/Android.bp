@@ -6,7 +6,7 @@
 //
 
 android_app {
-    name: "DolbyManager",
+    name: "XiaomiDolby",
 
     srcs: ["src/**/*.kt"],
     resource_dirs: ["res"],
@@ -20,9 +20,18 @@ android_app {
         "SettingsLib",
         "SpaLib",
         "androidx.activity_activity-compose",
-        "androidx.compose.material3_material3",
         "androidx.compose.runtime_runtime",
         "androidx.preference_preference",
         "com.google.android.material_material",
+        "org.lineageos.settings.resources",
     ],
+
+    required: ["preinstalled-packages-platform-dolby.xml"],
+}
+
+prebuilt_etc {
+    name: "preinstalled-packages-platform-dolby.xml",
+    src: "preinstalled-packages-platform-dolby.xml",
+    sub_dir: "sysconfig",
+    system_ext_specific: true,
 }
