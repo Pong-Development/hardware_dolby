@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2023-24 crDroid Android
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+
+    <!-- Dolby Atmos -->
+    <string name="dolby_title">Dolby Atmos</string>
+    <string name="dolby_enable">Dolby Atmos</string>
+    <string name="dolby_profile_title">Выбор профиля</string>
+    <string name="dolby_preset">Графический эквалайзер</string>
+    <string name="dolby_off">Выключено</string>
+    <string name="dolby_on">Включено</string>
+    <string name="dolby_low">Низкое</string>
+    <string name="dolby_medium">Среднее</string>
+    <string name="dolby_high">Высокое</string>
+    <string name="dolby_max">Максимальное</string>
+    <string name="dolby_unknown">Неизвестно</string>
+    <string name="dolby_on_with_profile">Включен (%1$s)</string>
+    <string name="dolby_category_settings">Настройки</string>
+    <string name="dolby_bass_enhancer">Усиление басов</string>
+    <string name="dolby_dialogue_enhancer">Улучшение диалога</string>
+    <string name="dolby_spk_virtualizer">Виртуализация динамиков</string>
+    <string name="dolby_hp_virtualizer">Виртуализация наушников</string>
+    <string name="dolby_stereo_widening">Расширение стерео</string>
+    <string name="dolby_volume_leveler">Авторегулятор громкости</string>
+    <string name="dolby_connect_headphones">Подключите наушники</string>
+    <string name="dolby_reset_profile">Сбросить по умолчанию</string>
+    <string name="dolby_reset_profile_toast">Сброшены настройки для профиля - %1$s</string>
+
+    <!-- Dolby profiles -->
+    <string name="dolby_profile_dynamic">Динамический</string>
+    <string name="dolby_profile_video">Фильм/Видео</string>
+    <string name="dolby_profile_music">Музыка</string>
+    <string name="dolby_profile_voice">Голос</string>
+
+    <!-- Dolby equalizer presets -->
+    <string name="dolby_preset_default">Плоский (выкл.)</string>
+    <string name="dolby_preset_rock">Рок</string>
+    <string name="dolby_preset_jazz">Джаз</string>
+    <string name="dolby_preset_pop">Поп</string>
+    <string name="dolby_preset_classical">Классика</string>
+    <string name="dolby_preset_hiphop">Хип-хоп</string>
+    <string name="dolby_preset_blues">Блюз</string>
+    <string name="dolby_preset_electronic">Электроника</string>
+    <string name="dolby_preset_country">Кантри</string>
+    <string name="dolby_preset_dance">Танец</string>
+    <string name="dolby_preset_metal">Металл</string>
+
+    <!-- Dolby equalizer UI -->
+    <string name="dolby_geq_slider_label_gain">Усиление</string>
+    <string name="dolby_geq_preset">Предустановка</string>
+    <string name="dolby_geq_preset_name">Имя предустановки</string>
+    <string name="dolby_geq_new_preset">Новая предустановка</string>
+    <string name="dolby_geq_rename_preset">Переименовать</string>
+    <string name="dolby_geq_delete_preset">Удалить</string>
+    <string name="dolby_geq_delete_preset_prompt">Вы хотите удалить эту предустановку?</string>
+    <string name="dolby_geq_reset_gains">Сброс усилений</string>
+    <string name="dolby_geq_reset_gains_prompt">Вы хотите сбросить эту предустановку?</string>
+    <string name="dolby_geq_preset_name_exists">Имя предустановки уже существует!</string>
+    <string name="dolby_geq_preset_name_too_long">Имя предустановки очень длинное!</string>
+
+    <!-- Dolby intelligent EQ -->
+    <string name="dolby_ieq">Интеллектуальный эквалайзер</string>
+    <string name="dolby_balanced">Сбалансированный</string>
+    <string name="dolby_warm">Тёплый</string>
+    <string name="dolby_detailed">Детальный</string>
+
+</resources>
