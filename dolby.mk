@@ -48,7 +48,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.hardware.dms@2.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.hardware.dms@2.0-service.rc \
     $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.media.c2@1.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.media.c2@1.0-service.rc \
-    $(DOLBY_PATH)/proprietary/vendor/etc/dolby/dax-default.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default.xml \
     $(DOLBY_PATH)/proprietary/vendor/etc/init/dolby_vision_codec2.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/dolby_vision_codec2.rc
 
 PRODUCT_PACKAGES += \
