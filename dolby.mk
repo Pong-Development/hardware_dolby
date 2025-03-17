@@ -21,6 +21,9 @@ DOLBY_PATH := hardware/dolby
 PRODUCT_SOONG_NAMESPACES += \
    $(DOLBY_PATH)
 
+# Enable codec support
+AUDIO_FEATURE_ENABLED_DS2_DOLBY_DAP := true
+
 # SEPolicy
 BOARD_VENDOR_SEPOLICY_DIRS += $(DOLBY_PATH)/sepolicy/vendor
 
