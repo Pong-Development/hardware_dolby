@@ -27,7 +27,7 @@ fun TooltipIconButton(
     onClick: () -> Unit
 ) {
     TooltipBox(
-        positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+        positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
         tooltip = {
             Text(text)
         },
