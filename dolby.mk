@@ -32,6 +32,14 @@ PRODUCT_COPY_FILES += \
     $(DOLBY_PATH)/configs/dax/dax-default.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default.xml \
     $(DOLBY_PATH)/configs/media/media_codecs_dolby_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_audio.xml
 
+# Config v7.0 for xiaomi_sm8450
+$(foreach sku, taro diwali cape ukee parrot, \
+    $(eval PRODUCT_COPY_FILES += \
+        $(DOLBY_PATH)/configs/audio_config/audio_effects.conf:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_$(sku)/audio_effects.conf \
+        $(DOLBY_PATH)/configs/audio_config/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_$(sku)/audio_effects.xml \
+        $(DOLBY_PATH)/configs/audio_config/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_$(sku)/audio_policy_configuration.xml \
+    ))
+
 # Dolby
 PRODUCT_VENDOR_PROPERTIES += \
     ro.vendor.dolby.dax.version=DAX3_3.7.0.8_r1 \
