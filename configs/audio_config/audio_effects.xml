@@ -122,10 +122,8 @@
         <stream type="voice_call">
         </stream>
         <stream type="notification">
-            <apply effect="dynamics_processing"/>
         </stream>
         <stream type="system">
-            <apply effect="dynamics_processing"/>
         </stream>
         <stream type="bluetooth_sco">
         </stream>
