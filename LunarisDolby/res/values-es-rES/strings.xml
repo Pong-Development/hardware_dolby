@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2023-25 Paranoid Android
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+
+    <!-- Dolby Atmos -->
+    <string name="dolby_title">Dolby Atmos</string>
+    <string name="dolby_enable">Usar Dolby Atmos</string>
+    <string name="dolby_profile_title">Elegir un perfil</string>
+    <string name="dolby_preset">Ecualizador</string>
+    <string name="dolby_off">Desactivado</string>
+    <string name="dolby_on">Activado</string>
+    <string name="dolby_low">Bajo</string>
+    <string name="dolby_medium">Medio</string>
+    <string name="dolby_high">Alto</string>
+    <string name="dolby_max">Máximo</string>
+    <string name="dolby_unknown">Desconocido</string>
+    <string name="dolby_on_with_profile">Activado (%1$s)</string>
+    <string name="dolby_category_settings">Ajuste de audio</string>
+    <string name="dolby_category_adv_settings">Ajustes avanzados</string>
+    <string name="dolby_adv_settings_footer">Elige un perfil diferente para mostrar los ajustes avanzados.</string>
+    <string name="dolby_bass_enhancer">Mejorador de graves</string>
+    <string name="dolby_bass_level">Nivel de graves</string>
+    <string name="dolby_bass_curve">Curva de graves</string>
+    <string name="dolby_bass_curve_balanced">Equilibrado</string>
+    <string name="dolby_bass_curve_sub_boost">Refuerzo de subgraves</string>
+    <string name="dolby_bass_curve_punch">Impacto</string>
+    <string name="dolby_treble_enhancer">Mejorador de agudos</string>
+    <string name="dolby_treble_level">Nivel de agudos</string>
+    <string name="dolby_dialogue_enhancer">Mejorador de diálogos</string>
+    <string name="dolby_spk_virtualizer">Virtualizador de sonido envolvente para altavoces</string>
+    <string name="dolby_hp_virtualizer">Virtualizador de sonido envolvente para auriculares</string>
+    <string name="dolby_volume_leveler">Nivelador de volumen</string>
+    <string name="dolby_bass_enhancer_summary">Mejora los sonidos de baja frecuencia para unos graves más profundos</string>  
+    <string name="dolby_treble_enhancer_summary">Mejora los sonidos de alta frecuencia para unos agudos más claros</string>
+    <string name="dolby_dialogue_enhancer_summary">Mejora la claridad de voces y diálogos</string>  
+    <string name="dolby_spk_virtualizer_summary">Crea sonido envolvente virtual en los altavoces</string>  
+    <string name="dolby_hp_virtualizer_summary">Crea sonido envolvente virtual en los auriculares</string>  
+    <string name="dolby_volume_leveler_summary">Equilibra el volumen para una experiencia de escucha uniforme</string>  
+    <string name="dolby_connect_headphones">Conectar auriculares</string>
+    <string name="dolby_reset_all">Restablecer perfiles</string>
+    <string name="dolby_reset_all_message">Esto restablecerá todos los perfiles a los valores de fábrica.</string>
+    <string name="dolby_reset_all_toast">Todos los perfiles se han restablecido correctamente</string>
+    <string name="dolby_hp_virtualizer_dolby_strength">Intensidad del virtualizador envolvente</string>
+    <string name="dolby_dialogue_enhancer_dolby_strength">Intensidad del mejorador de diálogos</string>
+    <string name="dolby_notification_listener_label">Servicio Dolby Atmos</string>
+
+    <!-- Dolby profiles -->
+    <string name="dolby_profile_dynamic">Dinámico</string>
+    <string name="dolby_profile_video">Película/Vídeo</string>
+    <string name="dolby_profile_music">Música</string>
+    <string name="dolby_profile_game">Juegos</string>
+    <string name="dolby_profile_work">Trabajo</string>
+    <string name="dolby_profile_casual">Casual</string>
+    <string name="dolby_profile_mood">Estado de ánimo</string>
+
+    <!-- Dolby equalizer presets -->
+    <string name="dolby_preset_default">Plano (desactivado)</string>
+    <string name="dolby_preset_rock">Rock</string>
+    <string name="dolby_preset_jazz">Jazz</string>
+    <string name="dolby_preset_pop">Pop</string>
+    <string name="dolby_preset_classical">Clásica</string>
+    <string name="dolby_preset_hiphop">Hip Hop</string>
+    <string name="dolby_preset_blues">Blues</string>
+    <string name="dolby_preset_electronic">Electrónica</string>
+    <string name="dolby_preset_country">Country</string>
+    <string name="dolby_preset_dance">Dance</string>
+    <string name="dolby_preset_metal">Metal</string>
+    <string name="dolby_preset_acoustic">Acústica</string>
+    <string name="dolby_preset_bass">Refuerzo de graves</string>
+    <string name="dolby_preset_beats">Beats</string>
+    <string name="dolby_preset_clear">Cristalino</string>
+    <string name="dolby_preset_deep">Profundo</string>
+    <string name="dolby_preset_dubstep">Dubstep</string>
+    <string name="dolby_preset_hardstyle">Hardstyle</string>
+    <string name="dolby_preset_movie">Película</string>
+    <string name="dolby_preset_rb">R&amp;B</string>
+    <string name="dolby_preset_vocal">Refuerzo vocal</string>
+    <string name="dolby_preset_custom">Personalizado</string>
+
+    <!-- Dolby equalizer UI -->
+    <string name="dolby_geq_slider_label_gain">Ganancia</string>
+    <string name="dolby_geq_preset">Preajuste</string>
+    <string name="dolby_geq_preset_name">Nombre del preajuste</string>
+    <string name="dolby_geq_new_preset">Nuevo preajuste</string>
+    <string name="dolby_geq_rename_preset">Renombrar preajuste</string>
+    <string name="dolby_geq_delete_preset">Eliminar preajuste</string>
+    <string name="dolby_geq_delete_preset_prompt">¿Quieres eliminar este preajuste?</string>
+    <string name="dolby_geq_reset_gains">Restablecer ganancias</string>
+    <string name="dolby_geq_reset_gains_prompt">¿Quieres restablecer este preajuste a los valores predeterminados?</string>
+    <string name="dolby_geq_preset_name_exists">¡El nombre del preajuste ya existe!</string>
+    <string name="dolby_geq_preset_name_too_long">¡El nombre del preajuste es demasiado largo!</string>
+
+    <!-- Dolby intelligent EQ -->
+    <string name="dolby_ieq">Ecualizador inteligente</string>
+    <string name="dolby_balanced">Equilibrado</string>
+    <string name="dolby_warm">Cálido</string>
+    <string name="dolby_detailed">Detallado</string>
+
+    <!-- Per-App Audio Profiles -->
+    <string name="app_profiles_title">Perfiles de audio por aplicación</string>
+    <string name="app_profiles_description">Asigna diferentes perfiles de audio a aplicaciones individuales para un sonido optimizado según el tipo de contenido</string>
+    <string name="app_profiles_search_hint">Buscar aplicaciones…</string>
+    <string name="app_profiles_no_apps">No se encontraron aplicaciones</string>
+    <string name="app_profiles_loading">Cargando aplicaciones…</string>
+    <string name="app_profiles_clear_all">Borrar todos los perfiles de aplicaciones</string>
+    <string name="app_profiles_clear_all_message">Esto eliminará todas las asignaciones de perfiles por aplicación. Las aplicaciones usarán el perfil predeterminado.</string>
+    <string name="app_profiles_manage">Gestionar perfiles de aplicaciones</string>
+    <string name="app_profiles_default">Predeterminado</string>
+    <string name="app_profiles_change">Cambiar</string>
+    <string name="app_profiles_assigned">Asignado: %1$s</string>
+    <string name="app_profiles_headphone_only">Modo solo auriculares/BT</string>
+    <string name="app_profiles_headphone_only_description">Cambiar perfiles solo cuando haya auriculares o dispositivos de audio Bluetooth conectados</string>
+
+    <!-- Preset Import/Export -->
+    <string name="preset_import_export">Importar/Exportar preajustes</string>
+    <string name="preset_export_single">Exportar preajuste</string>
+    <string name="preset_import_single">Importar preajuste</string>
+    <string name="preset_export_batch">Exportar todos los preajustes</string>
+    <string name="preset_import_batch">Importar varios preajustes</string>
+    <string name="preset_copy_clipboard">Copiar al portapapeles</string>
+    <string name="preset_paste_clipboard">Pegar desde el portapapeles</string>
+    <string name="preset_share">Compartir preajuste</string>
+    <string name="preset_export_success">Preajuste exportado correctamente</string>
+    <string name="preset_import_success">Preajuste importado correctamente</string>
+    <string name="preset_export_failed">Error al exportar</string>
+    <string name="preset_import_failed">Error al importar</string>
+
+</resources>
+
