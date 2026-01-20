@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2023-25 Paranoid Android
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+
+    <!-- Dolby Atmos -->
+    <string name="dolby_title">Dolby Atmos</string>
+    <string name="dolby_enable">Usar Dolby Atmos</string>
+    <string name="dolby_profile_title">Escolha um perfil</string>
+    <string name="dolby_preset">Equalizador</string>
+    <string name="dolby_off">Desligado</string>
+    <string name="dolby_on">Ligado</string>
+    <string name="dolby_low">Baixo</string>
+    <string name="dolby_medium">Médio</string>
+    <string name="dolby_high">Alto</string>
+    <string name="dolby_max">Máximo</string>
+    <string name="dolby_unknown">Desconhecido</string>
+    <string name="dolby_on_with_profile">Ligado (%1$s)</string>
+    <string name="dolby_category_settings">Ajuste de áudio</string>
+    <string name="dolby_category_adv_settings">Configurações avançadas</string>
+    <string name="dolby_adv_settings_footer">Escolha um perfil diferente para mostrar as configurações avançadas.</string>
+    <string name="dolby_bass_enhancer">Realçador de graves</string>
+    <string name="dolby_bass_level">Nível de graves</string>
+    <string name="dolby_bass_curve">Curva de graves</string>
+    <string name="dolby_bass_curve_balanced">Equilibrado</string>
+    <string name="dolby_bass_curve_sub_boost">Reforço de subgraves</string>
+    <string name="dolby_bass_curve_punch">Batida</string>
+    <string name="dolby_treble_enhancer">Realçador de agudos</string>
+    <string name="dolby_treble_level">Nível de agudos</string>
+    <string name="dolby_dialogue_enhancer">Realçador de diálogo</string>
+    <string name="dolby_spk_virtualizer">Virtualizador surround para alto-falantes</string>
+    <string name="dolby_hp_virtualizer">Virtualizador surround para fones</string>
+    <string name="dolby_volume_leveler">Nivelador de volume</string>
+    <string name="dolby_bass_enhancer_summary">Realça sons de baixa frequência para graves mais profundos</string>  
+    <string name="dolby_treble_enhancer_summary">Realça sons de alta frequência para agudos mais claros</string>
+    <string name="dolby_dialogue_enhancer_summary">Melhora a clareza de vozes e diálogos</string>  
+    <string name="dolby_spk_virtualizer_summary">Cria som surround virtual nos alto-falantes</string>  
+    <string name="dolby_hp_virtualizer_summary">Cria som surround virtual nos fones de ouvido</string>  
+    <string name="dolby_volume_leveler_summary">Equilibra o volume para uma experiência auditiva consistente</string>  
+    <string name="dolby_connect_headphones">Conecte fones de ouvido</string>
+    <string name="dolby_reset_all">Redefinir perfis</string>
+    <string name="dolby_reset_all_message">Isso redefinirá todos os perfis para os padrões de fábrica.</string>
+    <string name="dolby_reset_all_toast">Todos os perfis foram redefinidos com sucesso</string>
+    <string name="dolby_hp_virtualizer_dolby_strength">Intensidade do virtualizador surround</string>
+    <string name="dolby_dialogue_enhancer_dolby_strength">Intensidade do realçador de diálogo</string>
+    <string name="dolby_notification_listener_label">Serviço Dolby Atmos</string>
+    <string name="loading">Carregando...</string>
+
+    <!-- Dolby profiles -->
+    <string name="dolby_profile_dynamic">Dinâmico</string>
+    <string name="dolby_profile_video">Filme/Vídeo</string>
+    <string name="dolby_profile_music">Música</string>
+    <string name="dolby_profile_game">Jogos</string>
+    <string name="dolby_profile_work">Trabalho</string>
+    <string name="dolby_profile_casual">Casual</string>
+    <string name="dolby_profile_mood">Humor</string>
+
+    <!-- Dolby equalizer presets -->
+    <string name="dolby_preset_default">Plano (desligado)</string>
+    <string name="dolby_preset_rock">Rock</string>
+    <string name="dolby_preset_jazz">Jazz</string>
+    <string name="dolby_preset_pop">Pop</string>
+    <string name="dolby_preset_classical">Clássica</string>
+    <string name="dolby_preset_hiphop">Hip Hop</string>
+    <string name="dolby_preset_blues">Blues</string>
+    <string name="dolby_preset_electronic">Eletrônica</string>
+    <string name="dolby_preset_country">Country</string>
+    <string name="dolby_preset_dance">Dance</string>
+    <string name="dolby_preset_metal">Metal</string>
+    <string name="dolby_preset_acoustic">Acústico</string>
+    <string name="dolby_preset_bass">Reforço de graves</string>
+    <string name="dolby_preset_beats">Batidas</string>
+    <string name="dolby_preset_clear">Cristalino</string>
+    <string name="dolby_preset_deep">Profundo</string>
+    <string name="dolby_preset_dubstep">Dubstep</string>
+    <string name="dolby_preset_hardstyle">Hardstyle</string>
+    <string name="dolby_preset_movie">Filme</string>
+    <string name="dolby_preset_rb">R&amp;B</string>
+    <string name="dolby_preset_vocal">Reforço vocal</string>
+    <string name="dolby_preset_custom">Personalizado</string>
+    <string name="equalizer">Equalizador</string>
+    <string name="advanced">Avançado</string>
+    <string name="home">Início</string>
+
+    <!-- Dolby equalizer UI -->
+    <string name="dolby_geq_slider_label_gain">Ganho</string>
+    <string name="dolby_geq_preset">Predefinição</string>
+    <string name="dolby_geq_preset_name">Nome da predefinição</string>
+    <string name="dolby_geq_new_preset">Nova predefinição</string>
+    <string name="dolby_geq_rename_preset">Renomear predefinição</string>
+    <string name="dolby_geq_delete_preset">Excluir predefinição</string>
+    <string name="dolby_geq_delete_preset_prompt">Deseja excluir esta predefinição?</string>
+    <string name="dolby_geq_reset_gains">Redefinir ganhos</string>
+    <string name="dolby_geq_reset_gains_prompt">Deseja redefinir esta predefinição para os padrões?</string>
+    <string name="dolby_geq_preset_name_exists">O nome da predefinição já existe!</string>
+    <string name="dolby_geq_preset_name_too_long">O nome da predefinição é muito longo!</string>
+    <string name="band_mode_mismatch">Incompatibilidade de modo de banda</string>
+    <string name="frequency_response">Resposta de frequência</string>
+    <string name="locked">Bloqueado</string>
+    <string name="band_configuration">Configuração de banda</string>
+    <string name="choose_equalizer_precision">Escolha a precisão do equalizador: mais bandas = controle mais fino</string>
+
+    <!-- Dolby intelligent EQ -->
+    <string name="dolby_ieq">Equalizador inteligente</string>
+    <string name="dolby_balanced">Equilibrado</string>
+    <string name="dolby_warm">Quente</string>
+    <string name="dolby_detailed">Detalhado</string>
+
+    <!-- Per-App Audio Profiles -->
+    <string name="app_profiles_title">Perfis de áudio por app</string>
+    <string name="app_profiles_desc">Atribua diferentes perfis de áudio a apps individuais para som otimizado com base no tipo de conteúdo</string>
+    <string name="app_profiles_search_hint">Pesquisar apps...</string>
+    <string name="app_profiles_no_apps">Nenhum app encontrado</string>
+    <string name="app_profiles_loading">Carregando apps...</string>
+    <string name="app_profiles_clear_all">Limpar todos os perfis de app</string>
+    <string name="app_profiles_clear_all_message">Isso removerá todas as atribuições de perfil por app. Os apps usarão o perfil padrão.</string>
+    <string name="app_profiles_manage">Gerenciar perfis de app</string>
+    <string name="app_profiles_default">Padrão</string>
+    <string name="app_profiles_assigned">Atribuído: %1$s</string>
+    <string name="app_profiles_headphone_only">Modo somente Fones/BT</string>
+    <string name="app_profiles_headphone_only_description">Alternar perfis apenas quando fones de ouvido ou dispositivos de áudio Bluetooth estiverem conectados</string>
+    <string name="app_profiles_permission_required">Permissão necessária</string>
+    <string name="app_profiles_permission_required_details">Para alternar perfis automaticamente com base no app ativo, conceda a permissão de Acesso ao uso na próxima tela.</string>
+    <string name="app_profiles_grant_permission">Conceder permissão</string>
+    <string name="app_profiles_search_placeholder">Pesquisar apps...</string>
+    <string name="app_profiles_no_apps_found">Nenhum app encontrado</string>
+    <string name="app_profiles_retry">Tentar novamente</string>
+    <string name="app_profiles_change">Alterar</string>
+    <string name="app_profiles_auto_switch">Troca automática de perfis</string>
+    <string name="app_profiles_show_toasts">Mostrar avisos</string>
+
+    <!-- Preset Import/Export -->
+    <string name="preset_import_export">Importar/Exportar predefinições</string>
+    <string name="preset_export_single">Exportar predefinição</string>
+    <string name="preset_import_single">Importar predefinição</string>
+    <string name="preset_export_batch">Exportar todas as predefinições</string>
+    <string name="preset_import_batch">Importar múltiplas predefinições</string>
+    <string name="preset_copy_clipboard">Copiar para a área de transferência</string>
+    <string name="preset_paste_clipboard">Colar da área de transferência</string>
+    <string name="preset_share">Compartilhar predefinição</string>
+    <string name="preset_export_success">Predefinição exportada com sucesso</string>
+    <string name="preset_import_success">Predefinição importada com sucesso</string>
+    <string name="preset_export_failed">Falha na exportação</string>
+    <string name="preset_import_failed">Falha na importação</string>
+
+    <!-- Notification Access -->
+    <string name="notification_access_required">Acesso a notificações necessário</string>
+    <string name="notification_access_required_desc">Ative o acesso a notificações para manter o Dolby Atmos rodando em segundo plano e permitir a troca automática de perfis.</string>
+    <string name="enable_notification_access">Ativar acesso a notificações</string>
+    <string name="enable_notification_access_desc">Ative o acesso a notificações para manter o Dolby Atmos rodando em segundo plano e permitir a troca automática de perfis.</string>
+    <string name="notification_access_permission_details">Esta permissão permite que o Dolby Atmos:\n\n• Execute continuamente em segundo plano\n• Alterne automaticamente perfis de áudio\n• Monitore apps em primeiro plano\n\nSuas notificações não serão lidas ou modificadas.</string>
+    <string name="open_settings">Abrir configurações</string>
+    <string name="cancel">Cancelar</string>
+
+    <!--import export -->
+    <string name="import_export_presets">Importar/Exportar predefinições</string>
+    <string name="import_presets">Importar predefinições</string>
+    <string name="import_presets_description">Importe predefinições de arquivos ou da área de transferência</string>
+    <string name="import_single_file">Arquivo único</string>
+    <string name="import_batch">Lote</string>
+    <string name="import_from_clipboard">Da área de transferência</string>
+    <string name="your_custom_presets">Suas predefinições personalizadas</string>
+    <string name="processing">Processando...</string>
+    <string name="batch_export">Exportação em lote</string>
+    <string name="batch_export_description">Exportar todas as %1$s predefinições personalizadas para um único arquivo?</string>
+    <string name="export_all">Exportar tudo</string>
+</resources>
