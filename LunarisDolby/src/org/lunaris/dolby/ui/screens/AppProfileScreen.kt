@@ -5,6 +5,7 @@
 
 package org.lunaris.dolby.ui.screens
 
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -386,7 +387,7 @@ private fun AppProfileItem(
                             expanded = false
                         }
                     )
-                    Divider(color = MaterialTheme.colorScheme.outlineVariant)
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                     profiles.forEachIndexed { index, profileName ->
                         val profileValue = profileValues[index].toInt()
                         DropdownMenuItem(

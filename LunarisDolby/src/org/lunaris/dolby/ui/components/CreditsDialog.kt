@@ -5,6 +5,7 @@
 
 package org.lunaris.dolby.ui.components
 
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -200,7 +201,7 @@ fun CreditsDialog(
                                     )
                                 }
                                 Icon(
-                                    imageVector = Icons.Default.OpenInNew,
+                                    imageVector = Icons.AutoMirrored.Filled.OpenInNew,
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                                     modifier = Modifier.size(20.dp)
@@ -376,7 +377,7 @@ private fun ContributorCard(
             }
             
             Icon(
-                imageVector = Icons.Default.OpenInNew,
+                imageVector = Icons.AutoMirrored.Filled.OpenInNew,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(20.dp)

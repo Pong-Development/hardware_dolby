@@ -16,7 +16,7 @@ android_app {
     system_ext_specific: true,
     privileged: true,
 
-    overrides: ["MusicFX", "AudioFX"],
+    overrides: ["MusicFX"],
     static_libs: [
         "androidx.activity_activity-compose",
         "androidx.compose.animation_animation",

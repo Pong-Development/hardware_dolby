@@ -5,6 +5,7 @@
 
 package org.lunaris.dolby.ui.screens
 
+import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
@@ -331,7 +332,7 @@ private fun ModernEqualizerContent(
                 ) {
                     ViewModeTile(
                         title = "Curve",
-                        icon = Icons.Default.ShowChart,
+                        icon = Icons.AutoMirrored.Filled.ShowChart,
                         isSelected = viewMode == EqualizerViewMode.CURVE,
                         onClick = { onViewModeChange(EqualizerViewMode.CURVE) },
                         modifier = Modifier.weight(1f)

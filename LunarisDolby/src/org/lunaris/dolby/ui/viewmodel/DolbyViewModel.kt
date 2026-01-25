@@ -6,15 +6,18 @@
 package org.lunaris.dolby.ui.viewmodel
 
 import android.app.Application
+import android.os.SystemProperties
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import org.lunaris.dolby.DolbyConstants
 import org.lunaris.dolby.data.DolbyRepository
 import org.lunaris.dolby.domain.models.*
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.cancelChildren
 
 class DolbyViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -23,7 +26,7 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
     private val _uiState = MutableStateFlow<DolbyUiState>(DolbyUiState.Loading)
     val uiState: StateFlow<DolbyUiState> = _uiState.asStateFlow()
     val currentProfile: StateFlow<Int> = repository.currentProfile
-    
+
     private var speakerStateJob: Job? = null
     private var profileChangeJob: Job? = null
     private var isCleared = false
@@ -34,11 +37,11 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
         observeSpeakerState()
         observeProfileChanges()
     }
-    
+
     private fun observeSpeakerState() {
         speakerStateJob?.cancel()
         speakerStateJob = viewModelScope.launch {
-            repository.isOnSpeaker.collect { 
+            repository.isOnSpeaker.collect {
                 if (!isCleared) {
                     DolbyConstants.dlog(TAG, "Speaker state changed: $it")
                     loadSettings()
@@ -46,7 +49,7 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
-    
+
     private fun observeProfileChanges() {
         profileChangeJob?.cancel()
         profileChangeJob = viewModelScope.launch {
@@ -64,13 +67,13 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
             DolbyConstants.dlog(TAG, "ViewModel cleared, skipping loadSettings")
             return
         }
-        
+
         viewModelScope.launch {
             try {
                 val enabled = repository.getDolbyEnabled()
                 val profile = repository.getCurrentProfile()
                 val bandMode = repository.getBandMode()
-                
+
                 val settings = DolbySettings(
                     enabled = enabled,
                     currentProfile = profile,
@@ -78,7 +81,7 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
                     volumeLevelerEnabled = repository.getVolumeLevelerEnabled(profile),
                     bandMode = bandMode
                 )
-                
+
                 val profileSettings = ProfileSettings(
                     profile = profile,
                     ieqPreset = repository.getIeqPreset(profile),
@@ -91,7 +94,7 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
                     trebleLevel = repository.getTrebleLevel(profile),
                     bassCurve = repository.getBassCurve(profile)
                 )
-                
+
                 if (!isCleared) {
                     _uiState.value = DolbyUiState.Success(
                         settings = settings,
@@ -120,10 +123,26 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    /**
+     * Persist selected profile across reboot (stock-like behavior).
+     * Note: may require property_contexts + SELinux allow to write persist.vendor.* props.
+     */
+    private fun persistProfile(profile: Int) {
+        SystemProperties.set("persist.vendor.dolby.profile", profile.toString())
+    }
+
     fun setProfile(profile: Int) {
         viewModelScope.launch {
             try {
                 repository.setCurrentProfile(profile)
+
+                // Avoid redundant writes
+                val cur = SystemProperties.get("persist.vendor.dolby.profile", "").toIntOrNull()
+                if (cur != profile) {
+                    persistProfile(profile)
+                }
+
+                loadSettings()
             } catch (e: Exception) {
                 DolbyConstants.dlog(TAG, "Error setting profile: ${e.message}")
             }
@@ -286,7 +305,7 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
             repository.updateSpeakerState()
         }
     }
-    
+
     override fun onCleared() {
         DolbyConstants.dlog(TAG, "ViewModel onCleared")
         isCleared = true
@@ -298,8 +317,9 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
         repository.close()
         super.onCleared()
     }
-    
+
     companion object {
         private const val TAG = "DolbyViewModel"
     }
 }
+

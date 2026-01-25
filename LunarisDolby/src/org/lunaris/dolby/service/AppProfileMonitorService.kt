@@ -217,6 +217,7 @@ class AppProfileMonitorService : Service() {
         val usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val currentTime = System.currentTimeMillis()
         
+        @Suppress("DEPRECATION")
         val usageEvents = usageStatsManager.queryEvents(currentTime - 1000, currentTime)
         val event = UsageEvents.Event()
         
@@ -224,7 +225,9 @@ class AppProfileMonitorService : Service() {
         
         while (usageEvents.hasNextEvent()) {
             usageEvents.getNextEvent(event)
-            if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+            @Suppress("DEPRECATION")
+            val movedToForeground = (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND)
+            if (movedToForeground) {
                 lastPackage = event.packageName
             }
         }

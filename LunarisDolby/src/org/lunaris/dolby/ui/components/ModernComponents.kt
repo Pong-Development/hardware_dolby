@@ -695,6 +695,7 @@ fun ModernConfirmDialog(
                 onClick = onConfirm,
                 shape = MaterialTheme.shapes.medium
             ) {
+                @Suppress("DEPRECATION")
                 Text(stringResource(android.R.string.yes))
             }
         },
@@ -703,6 +704,7 @@ fun ModernConfirmDialog(
                 onClick = onDismiss,
                 shape = MaterialTheme.shapes.medium
             ) {
+                @Suppress("DEPRECATION")
                 Text(stringResource(android.R.string.no))
             }
         },
