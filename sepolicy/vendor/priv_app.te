@@ -1,0 +1,3 @@
+# Dolby
+allow priv_app hal_dms_hwservice:hwservice_manager find;
+binder_call(priv_app, hal_dms_default)

@@ -1,0 +1,3 @@
+# Audio
+persist.vendor.audio.scenario   u:object_r:vendor_audio_prop:s0
+persist.vendor.dolby.profile    u:object_r:vendor_audio_prop:s0

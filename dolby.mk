@@ -21,67 +21,88 @@ DOLBY_PATH := hardware/dolby
 PRODUCT_SOONG_NAMESPACES += \
    $(DOLBY_PATH)
 
+# Enable codec support
+AUDIO_FEATURE_ENABLED_DS2_DOLBY_DAP := true
+
 # SEPolicy
 BOARD_VENDOR_SEPOLICY_DIRS += $(DOLBY_PATH)/sepolicy/vendor
-
-# HIDL
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += $(DOLBY_PATH)/configs/vintf/dolby_framework_matrix.xml
-DEVICE_MANIFEST_FILE += \
-    $(DOLBY_PATH)/configs/vintf/vendor.dolby.hardware.dms@2.0-service.xml \
-    $(DOLBY_PATH)/configs/vintf/vendor.dolby.media.c2@1.0-service.xml
-
-# Build codec2 packages
-PRODUCT_PACKAGES += \
-    libavservices_minijail.vendor \
-    libcodec2_hidl@1.2.vendor \
-    libstagefright_foundation-v33 \
-    libcodec2_soft_common.vendor
-
+    
 # Configs
 PRODUCT_COPY_FILES += \
-    $(DOLBY_PATH)/configs/dax/dax-default.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default.xml \
-    $(DOLBY_PATH)/configs/media/media_codecs_dolby_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_audio.xml
+    $(DOLBY_PATH)/configs/dax-default.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default.xml \
+    $(DOLBY_PATH)/configs/media_codecs_dolby_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_audio.xml
 
-# Dolby
+# Overlays    
+PRODUCT_PACKAGES += \
+    DolbyFrameworksResCommon
+
+# Dolby Spatial Audio
+PRODUCT_COPY_FILES += \
+    $(DOLBY_PATH)/configs/android.hardware.sensor.dynamic.head_tracker.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.dynamic.head_tracker.xml
+
+# Dolby Spatial Audio: optimize spatializer effect
+PRODUCT_PROPERTY_OVERRIDES += \
+    audio.spatializer.effect.util_clamp_min=300
+
+# Dolby Spatial Audio: declare use of spatial audio
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.audio.spatializer_enabled=true \
+    ro.audio.headtracking_enabled=true \
+    ro.audio.spatializer_transaural_enabled_default=false \
+    persist.vendor.audio.spatializer.speaker_enabled=true
+
+# Dolby Spatial Audio Proprietary blobs
+PRODUCT_PACKAGES += \
+    libspatializerparamstorage \
+    libswspatializer
+
+# Codec2 Props
+PRODUCT_VENDOR_PROPERTIES += \
+    vendor.audio.c2.preferred=true \
+    debug.c2.use_dmabufheaps=1 \
+    vendor.qc2audio.suspend.enabled=true \
+    vendor.qc2audio.per_frame.flac.dec.enabled=true
+
+# Dolby Props
 PRODUCT_VENDOR_PROPERTIES += \
     ro.vendor.dolby.dax.version=DAX3_3.7.0.8_r1 \
-    ro.audio.spatializer_enabled=true \
-    ro.vendor.audio.dolby.dax.support=true \
-    ro.vendor.audio.dolby.surround.enable=true \
-    ro.audio.spatializer_transaural_enabled_default=false \
-    vendor.audio.dolby.ds2.enabled=false \
-    vendor.audio.dolby.ds2.hardbypass=false
+    vendor.audio.dolby.ds2.hardbypass=false \
+    vendor.audio.dolby.ds2.enabled=false
 
-# LunarisDolby
+# Remove Packages for Dolby Support
+PRODUCT_PACKAGES += \
+    RemovePackagesDolby
+
+# XiaomiDolby
 PRODUCT_PACKAGES += \
     LunarisDolby
 
-# Init
-PRODUCT_PACKAGES += \
-    init.dolby.rc
-
-# Proprietary-files
+# Dolby Proprietary blobs
 PRODUCT_COPY_FILES += \
-    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.hardware.dms@2.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.hardware.dms@2.0-service.rc \
+    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.hardware.dms@2.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.hardware.dms@2.0-service.rc
+
+PRODUCT_PACKAGES += \
+    libdapparamstorage \
+    libdlbdsservice \
+    libdlbpreg \
+    vendor.dolby.hardware.dms@2.0-impl \
+    vendor.dolby.hardware.dms@2.0 \
+    vendor.dolby.hardware.dms@2.0-service
+
+# Codec2 (Dolby)
+PRODUCT_COPY_FILES += \
     $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.media.c2@1.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.media.c2@1.0-service.rc
 
 PRODUCT_PACKAGES += \
-    vendor.dolby.hardware.dms@2.0-impl \
-    vendor.dolby.hardware.dms@2.0 \
-    vendor.dolby.hardware.dms@2.0-service \
-    vendor.dolby.media.c2@1.0-service \
     libcodec2_soft_ac4dec \
     libcodec2_soft_ddpdec \
-    libcodec2_soft_dolby \
     libcodec2_store_dolby \
-    libdapparamstorage \
     libdeccfg \
-    libdlbdsservice \
-    libdlbpreg \
-    libspatializerparamstorage \
-    libdlbvol \
-    libswdap \
-    libswgamedap \
-    libswspatializer \
-    libswvqe 
+    vendor.dolby.media.c2@1.0-service
 
+# Dolby SoundFX Blobs
+PRODUCT_PACKAGES += \
+    libdlbvol \
+    libhwdap \
+    libswgamedap \
+    libswvqe

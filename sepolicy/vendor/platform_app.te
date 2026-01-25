@@ -1,2 +1,4 @@
 allow platform_app hal_dms_hwservice:hwservice_manager find;
+hal_client_domain(platform_app, hal_dms)
 binder_call(platform_app, hal_dms_default)
+get_prop(platform_app, audio_config_prop)

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Included>
+    <Decoders>
+        <!-- DOLBY_UDC -->
+        <MediaCodec name="c2.dolby.eac3.decoder" >
+            <Type name="audio/ac3">
+                <Alias name="OMX.dolby.ac3.decoder" />
+                <Limit name="channel-count" max="6" />
+                <Limit name="sample-rate" ranges="32000,44100,48000" />
+                <Limit name="bitrate" range="32000-640000" />
+            </Type>
+            <Type name="audio/eac3">
+                <Alias name="OMX.dolby.eac3.decoder" />
+                <Limit name="channel-count" max="8" />
+                <Limit name="sample-rate" ranges="32000,44100,48000" />
+                <Limit name="bitrate" range="32000-6144000" />
+            </Type>
+            <Type name="audio/eac3-joc">
+                <Alias name="OMX.dolby.eac3-joc.decoder" />
+                <Limit name="channel-count" max="16" />
+                <Limit name="sample-rate" ranges="48000" />
+                <Limit name="bitrate" range="32000-6144000" />
+            </Type>
+        </MediaCodec>
+        <!-- DOLBY_UDC END -->
+        <!-- DOLBY_AC4 -->
+        <MediaCodec name="c2.dolby.ac4.decoder" type="audio/ac4">
+            <Alias name="OMX.dolby.ac4.decoder" />
+            <Limit name="channel-count" max="16" />
+            <Limit name="sample-rate" ranges="48000" />
+            <Limit name="bitrate" range="16000-2688000" />
+        </MediaCodec>
+        <!-- DOLBY_AC4 END -->
+    </Decoders>
+</Included>
