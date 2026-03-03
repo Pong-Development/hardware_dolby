@@ -34,7 +34,10 @@ android_app {
         "kotlinx-coroutines-core",
     ],
 
-    required: ["preinstalled-packages-platform-dolby.xml"],
+    required: [
+        "preinstalled-packages-platform-dolby.xml",
+        "privapp-permissions-dolby.xml",
+    ],
 }
 
 prebuilt_etc {
@@ -47,6 +50,6 @@ prebuilt_etc {
 prebuilt_etc {
     name: "privapp-permissions-dolby.xml",
     src: "privapp-permissions-dolby.xml",
-    sub_dir: "sysconfig",
+    sub_dir: "permissions",
     system_ext_specific: true,
 }
