@@ -63,6 +63,12 @@ fun CreditsDialog(
             githubUsername = "kenway214",
             contribution = "Base & Treble Changes, EQ Tuning",
             isHighlighted = true
+        ),
+        Contributor(
+            name = "tranQuila",
+            githubUsername = "MrTopia",
+            contribution = "Adding per-device dolby state memory",
+            isHighlighted = true
         )
     )
     

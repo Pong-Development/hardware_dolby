@@ -171,4 +171,9 @@
     <string name="dolby_mid_enhancer">Mid enhancer</string>
     <string name="dolby_mid_level">Mid level</string>
     <string name="dolby_mid_enhancer_summary">Enhances mid-frequency sounds for clearer vocals and instruments</string>
+    <!-- Device State Manager -->
+    <string name="device_state_title">Per-Device Sound Memory</string>
+    <string name="device_state_summary">Remembers all your Dolby settings per device, including unsaved EQ changes</string>
+    <string name="device_state_enabled">Sound memory is active</string>
+    <string name="device_state_first_time">New device — starting fresh</string>
 </resources>
