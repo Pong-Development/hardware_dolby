@@ -132,49 +132,9 @@ fun ModernDolbySettingsScreen(
                 }
             }
         }
-            
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .height(130.dp)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.95f)
-                            )
-                        )
-                    )
-            )
-            
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .padding(
-                        start = cutoutInsets.calculateStartPadding(layoutDirection),
-                        end = cutoutInsets.calculateEndPadding(layoutDirection),
-                        bottom = paddingValues.calculateBottomPadding()
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                FloatingNavToolbar(
-                    currentRoute = currentRoute?.destination?.route ?: "settings",
-                    onNavigate = { route ->
-                        if (currentRoute?.destination?.route != route) {
-                            navController.navigate(route) {
-                                popUpTo("settings") { saveState = true }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
-                    }
-                )
-            }
         }
-    }
 
+    }
     if (showResetDialog) {
         ModernConfirmDialog(
             title = stringResource(R.string.dolby_reset_all),
