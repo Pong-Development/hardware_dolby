@@ -180,4 +180,15 @@
     <string name="app_profile_conflict_toast">Per-device memory disabled — incompatible with per-app profiles</string>
     <string name="app_profile_conflict_summary">⚠ Disabled while per-app profiles are active — they conflict</string>
     <string name="device_state_memory_section_title">Audio Device Memory</string>
+
+    <!-- AutoEQ Profile -->
+    <string name="dolby_autoeq_title">Apply AutoEQ Profile</string>
+    <string name="dolby_autoeq_applied">Applied AutoEQ for %1$s</string>
+    <string name="dolby_autoeq_preset_name">AutoEQ: %1$s</string>
+    <string name="dolby_autoeq_search_hint">Search 8,000+ profiles...</string>
+    <string name="dolby_autoeq_currently_applied">Currently Applied</string>
+    <string name="dolby_autoeq_clear">Clear search</string>
+    <string name="dolby_autoeq_search">Search</string>
+    <string name="dolby_autoeq_active">Active profile</string>
+    <string name="dolby_autoeq_selected">Selected profile</string>
 </resources>
