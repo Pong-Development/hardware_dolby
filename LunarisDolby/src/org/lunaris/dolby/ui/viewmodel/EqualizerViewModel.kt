@@ -1,16 +1,19 @@
 /*
- * Copyright (C) 2024-2025 Lunaris AOSP
+ * Copyright (C) 2024-2026 Lunaris AOSP
  * SPDX-License-Identifier: Apache-2.0
  */
 
 package org.lunaris.dolby.ui.viewmodel
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import org.lunaris.dolby.DolbyConstants
 import org.lunaris.dolby.R
 import org.lunaris.dolby.data.DolbyRepository
+import org.lunaris.dolby.data.autoeq.*
 import org.lunaris.dolby.domain.models.*
 import org.lunaris.dolby.utils.ToastHelper
 import kotlinx.coroutines.Job
@@ -22,6 +25,8 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
 
     private val repository = DolbyRepository(application)
     private val context = application
+    
+    private val prefs: SharedPreferences = application.getSharedPreferences("autoeq_prefs", Context.MODE_PRIVATE)
 
     private val _uiState = MutableStateFlow<EqualizerUiState>(EqualizerUiState.Loading)
     val uiState: StateFlow<EqualizerUiState> = _uiState.asStateFlow()
@@ -30,6 +35,25 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
     private var currentBandMode = BandMode.TEN_BAND
     private var profileChangeJob: Job? = null
     private var isCleared = false
+
+    private lateinit var autoEqRepository: AutoEqRepository
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
+
+    private val _currentAppliedAutoEqId = MutableStateFlow(prefs.getString("last_applied_id", "") ?: "")
+    val currentAppliedAutoEqId: StateFlow<String> = _currentAppliedAutoEqId.asStateFlow()
+
+    private val _isSearchLoading = MutableStateFlow(false)
+    val isSearchLoading = _isSearchLoading.asStateFlow()
+
+    @OptIn(kotlinx.coroutines.FlowPreview::class)
+    val filteredAutoEqList: StateFlow<List<IndexEntry>> = _searchQuery
+        .debounce(250L)
+        .map { query -> 
+            if (::autoEqRepository.isInitialized) autoEqRepository.search(query) else emptyList()
+        }
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     init {
         DolbyConstants.dlog(TAG, "ViewModel initialized")
@@ -50,10 +74,7 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun loadEqualizer() {
-        if (isCleared) {
-            DolbyConstants.dlog(TAG, "ViewModel cleared, skipping loadEqualizer")
-            return
-        }
+        if (isCleared) return
         
         viewModelScope.launch {
             try {
@@ -66,6 +87,14 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
                 val allPresets = userPresets + builtInPresets
                 
                 val currentPresetName = repository.getPresetName(currentProfile)
+                
+                if (currentPresetName.contains("AutoEQ", ignoreCase = true)) {
+                    _currentAppliedAutoEqId.value = prefs.getString("last_applied_id", "") ?: ""
+                } else {
+                    _currentAppliedAutoEqId.value = ""
+                    prefs.edit().putString("last_applied_id", "").commit()
+                }
+                
                 val currentPreset = allPresets.find { it.name == currentPresetName }
                     ?: EqualizerPreset(
                         name = context.getString(R.string.dolby_preset_custom),
@@ -83,12 +112,119 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
                     )
                 }
             } catch (e: Exception) {
-                if (!isCleared) {
-                    DolbyConstants.dlog(TAG, "Error loading equalizer: ${e.message}")
-                    _uiState.value = EqualizerUiState.Error(e.message ?: "Unknown error")
+                if (!isCleared) _uiState.value = EqualizerUiState.Error(e.message ?: "Unknown error")
+            }
+        }
+    }
+
+    fun initAutoEq(ctx: Context) {
+        if (!::autoEqRepository.isInitialized) {
+            autoEqRepository = AutoEqRepository(ctx.applicationContext)
+        }
+        viewModelScope.launch {
+            _isSearchLoading.value = true
+            autoEqRepository.initialize()
+            _searchQuery.value = _searchQuery.value
+            _isSearchLoading.value = false
+        }
+    }
+
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
+    }
+
+    fun applyAutoEqProfileNetwork(ctx: Context, entry: IndexEntry) {
+        viewModelScope.launch {
+            _isSearchLoading.value = true
+            val profile = autoEqRepository.getProfile(entry.id)
+            
+            if (profile != null) {
+                prefs.edit().putString("last_applied_id", entry.id).commit()
+                _currentAppliedAutoEqId.value = entry.id
+                
+                applyAutoEqProfile(profile.name, profile.graphicEq)
+            } else {
+                ToastHelper.showToast(ctx, "Failed to download profile for ${entry.name}")
+            }
+            _isSearchLoading.value = false
+        }
+    }
+
+    fun applyAutoEqProfile(headphoneName: String, autoEqString: String) {
+        val state = _uiState.value
+        if (state !is EqualizerUiState.Success) return
+
+        viewModelScope.launch {
+            try {
+                val parsedAutoEq = parseAutoEqString(autoEqString)
+                if (parsedAutoEq.isEmpty()) {
+                    DolbyConstants.dlog(TAG, "Failed to parse AutoEQ string")
+                    return@launch
+                }
+
+                val targetFreqs = when (currentBandMode) {
+                    BandMode.TEN_BAND -> DolbyRepository.BAND_FREQUENCIES_10
+                    BandMode.FIFTEEN_BAND -> DolbyRepository.BAND_FREQUENCIES_15
+                    BandMode.TWENTY_BAND -> DolbyRepository.BAND_FREQUENCIES_20
+                }
+
+                val newBandGains = targetFreqs.map { targetHz ->
+                    val calculatedGain = interpolateGainForFrequency(targetHz, parsedAutoEq)
+                    BandGain(frequency = targetHz, gain = calculatedGain.coerceIn(-150, 150))
+                }
+
+                val presetName = context.getString(R.string.dolby_autoeq_preset_name, headphoneName)
+                
+                if (state.presets.any { it.name.equals(presetName, ignoreCase = true) }) {
+                    repository.deleteUserPreset(presetName)
+                }
+                
+                repository.addUserPreset(presetName, newBandGains, currentBandMode)
+                repository.setEqualizerGains(currentProfile, newBandGains, currentBandMode)
+                
+                ToastHelper.showToast(context, context.getString(R.string.dolby_autoeq_applied, headphoneName))
+                loadEqualizer()
+            } catch (e: Exception) {
+                DolbyConstants.dlog(TAG, "Error applying AutoEQ profile: ${e.message}")
+            }
+        }
+    }
+    
+    private fun parseAutoEqString(eqString: String): Map<Int, Int> {
+        val map = mutableMapOf<Int, Int>()
+        val cleanString = eqString.removePrefix("GraphicEQ:").trim()
+        val pairs = cleanString.split(";")
+        
+        for (pair in pairs) {
+            val parts = pair.trim().split(Regex("\\s+"))
+            if (parts.size == 2) {
+                val hz = parts[0].toIntOrNull()
+                val db = parts[1].toFloatOrNull()
+                if (hz != null && db != null) {
+                    map[hz] = (db * 10).toInt()
                 }
             }
         }
+        return map
+    }
+
+    private fun interpolateGainForFrequency(targetHz: Int, autoEqData: Map<Int, Int>): Int {
+        if (autoEqData.containsKey(targetHz)) {
+            return autoEqData[targetHz]!!
+        }
+
+        val sortedFreqs = autoEqData.keys.sorted()
+        val lowerHz = sortedFreqs.lastOrNull { it < targetHz }
+        val upperHz = sortedFreqs.firstOrNull { it > targetHz }
+
+        if (lowerHz == null) return autoEqData[upperHz] ?: 0
+        if (upperHz == null) return autoEqData[lowerHz] ?: 0
+
+        val lowerGain = autoEqData[lowerHz]!!
+        val upperGain = autoEqData[upperHz]!!
+        
+        val ratio = (targetHz - lowerHz).toFloat() / (upperHz - lowerHz)
+        return (lowerGain + ratio * (upperGain - lowerGain)).toInt()
     }
 
     private fun getBuiltInPresets(bandMode: BandMode): List<EqualizerPreset> {
@@ -328,9 +464,8 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
     }
-    
+
     override fun onCleared() {
-        DolbyConstants.dlog(TAG, "ViewModel onCleared")
         isCleared = true
         viewModelScope.coroutineContext.cancelChildren()
         profileChangeJob?.cancel()
