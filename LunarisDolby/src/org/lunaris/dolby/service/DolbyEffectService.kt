@@ -8,6 +8,7 @@ package org.lunaris.dolby.service
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.media.AudioAttributes
 import android.media.AudioDeviceCallback
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
@@ -35,12 +36,12 @@ class DolbyEffectService : Service() {
 
     private val audioDeviceCallback = object : AudioDeviceCallback() {
         override fun onAudioDevicesAdded(addedDevices: Array<AudioDeviceInfo>) {
-            Log.d(TAG, "Devices added: ${addedDevices.map { it.productName }}")
+            Log.d(TAG, "Devices added: ${addedDevices.map { it.debugString() }}")
             handleDeviceChange()
         }
 
         override fun onAudioDevicesRemoved(removedDevices: Array<AudioDeviceInfo>) {
-            Log.d(TAG, "Devices removed: ${removedDevices.map { it.productName }}")
+            Log.d(TAG, "Devices removed: ${removedDevices.map { it.debugString() }}")
             if (isDeviceStateMemoryEnabled) {
                 removedDevices.forEach { device ->
                     val key = deviceStateManager.deviceKey(device)
@@ -118,27 +119,37 @@ class DolbyEffectService : Service() {
     }
 
     private fun getCurrentOutputDevice(): AudioDeviceInfo? {
-        val devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
+        val routedDevice = try {
+            audioManager
+                .getDevicesForAttributes(ATTRIBUTES_MEDIA)
+                .firstOrNull()
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to get active media route", e)
+            null
+        } ?: return null
 
-        val priorityOrder = listOf(
-            AudioDeviceInfo.TYPE_BLUETOOTH_A2DP,
-            AudioDeviceInfo.TYPE_BLE_HEADSET,
-            AudioDeviceInfo.TYPE_BLE_SPEAKER,
-            AudioDeviceInfo.TYPE_BLE_BROADCAST,
-            AudioDeviceInfo.TYPE_BLUETOOTH_SCO,
-            AudioDeviceInfo.TYPE_WIRED_HEADPHONES,
-            AudioDeviceInfo.TYPE_WIRED_HEADSET,
-            AudioDeviceInfo.TYPE_USB_HEADSET,
-            AudioDeviceInfo.TYPE_USB_DEVICE,
-            AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
-        )
+        val outputs = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
+        val routedAddress = routedDevice.address.orEmpty()
 
-        for (type in priorityOrder) {
-            val device = devices.firstOrNull { it.type == type }
-            if (device != null) return device
+        return outputs.firstOrNull { device ->
+            device.isSink &&
+                device.type == routedDevice.type &&
+                (routedAddress.isEmpty() || device.address == routedAddress)
+        } ?: outputs.firstOrNull { device ->
+            device.isSink && device.type == routedDevice.type
+        }.also { device ->
+            if (device == null) {
+                Log.w(
+                    TAG,
+                    "Unable to map active media route: " +
+                        "type=${routedDevice.type}, address=${routedDevice.address}"
+                )
+            }
         }
-        return devices.firstOrNull()
     }
+
+    private fun AudioDeviceInfo.debugString(): String =
+        "name=$productName,type=$type,id=$id,address=$address,isSink=$isSink"
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         repository.applySavedState()
@@ -163,6 +174,11 @@ class DolbyEffectService : Service() {
 
     companion object {
         private const val TAG = "DolbyEffectService"
+
+        private val ATTRIBUTES_MEDIA = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_MEDIA)
+            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+            .build()
 
         fun start(context: Context) {
             val intent = Intent(context, DolbyEffectService::class.java)
