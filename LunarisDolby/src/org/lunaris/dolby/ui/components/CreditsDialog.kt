@@ -10,8 +10,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.LruCache
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,6 +31,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -37,7 +41,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.zIndex
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
@@ -47,6 +54,16 @@ data class Contributor(
     val githubUsername: String,
     val contribution: String,
     val isHighlighted: Boolean = false
+)
+
+data class Translator(
+    val name: String,
+    val githubUsername: String
+)
+
+data class TranslationEntry(
+    val language: String,
+    val translators: List<Translator>
 )
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -85,41 +102,49 @@ fun CreditsDialog(
         )
     )
     
-    val translationContributors = listOf(
-        Contributor(
-            name = "sm6150-dreams",
-            githubUsername = "sm6150-dreams",
-            contribution = "Spanish (Spain)"
+    val translationEntries = listOf(
+        TranslationEntry(
+            language = "Spanish (Spain)",
+            translators = listOf(
+                Translator(name = "sm6150-dreams", githubUsername = "sm6150-dreams")
+            )
         ),
-        Contributor(
-            name = "SMarcosS",
-            githubUsername = "S-Marcos-S",
-            contribution = "Portuguese (Brazil)"
+        TranslationEntry(
+            language = "Portuguese (Brazil)",
+            translators = listOf(
+                Translator(name = "SMarcosS", githubUsername = "S-Marcos-S")
+            )
         ),
-        Contributor(
-            name = "Alhaidar Latif",
-            githubUsername = "zylhdrXP",
-            contribution = "Indonesian"
+        TranslationEntry(
+            language = "Indonesian",
+            translators = listOf(
+                Translator(name = "Alhaidar Latif", githubUsername = "zylhdrXP")
+            )
         ),
-        Contributor(
-            name = "Kacper",
-            githubUsername = "ziomek3120",
-            contribution = "Polish"
+        TranslationEntry(
+            language = "Polish",
+            translators = listOf(
+                Translator(name = "Kacper", githubUsername = "ziomek3120"),
+                Translator(name = "rehork", githubUsername = "rehork")
+            )
         ),
-        Contributor(
-            name = "DenlNister",
-            githubUsername = "nnn950711",
-            contribution = "Traditional Chinese"
+        TranslationEntry(
+            language = "Traditional Chinese",
+            translators = listOf(
+                Translator(name = "DenlNister", githubUsername = "nnn950711")
+            )
         ),
-        Contributor(
-            name = "Ümit Taylan",
-            githubUsername = "jinetty",
-            contribution = "Turkish"
+        TranslationEntry(
+            language = "Turkish",
+            translators = listOf(
+                Translator(name = "Ümit Taylan", githubUsername = "jinetty")
+            )
         ),
-        Contributor(
-            name = "Dmitry",
-            githubUsername = "dkpost3",
-            contribution = "Russian"
+        TranslationEntry(
+            language = "Russian",
+            translators = listOf(
+                Translator(name = "Dmitry", githubUsername = "dkpost3")
+            )
         )
     )
     
@@ -286,17 +311,17 @@ fun CreditsDialog(
                             modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
                         )
                     }
-                    items(translationContributors.chunked(2)) { rowContributors ->
+                    items(translationEntries.chunked(2)) { rowEntries ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
-                            rowContributors.forEach { contributor ->
+                            rowEntries.forEach { entry ->
                                 Box(modifier = Modifier.weight(1f)) {
-                                    CompactContributorCard(contributor = contributor)
+                                    CompactTranslationCard(entry = entry)
                                 }
                             }
-                            if (rowContributors.size == 1) {
+                            if (rowEntries.size == 1) {
                                 Spacer(modifier = Modifier.weight(1f))
                             }
                         }
@@ -524,11 +549,24 @@ private fun ContributorCard(
 }
 
 @Composable
-private fun CompactContributorCard(
-    contributor: Contributor
+private fun CompactTranslationCard(
+    entry: TranslationEntry
 ) {
     val context = LocalContext.current
-    val githubUrl = "https://github.com/${contributor.githubUsername}"
+    val translators = entry.translators
+    var currentIndex by remember { mutableIntStateOf(0) }
+    
+    LaunchedEffect(translators.size) {
+        if (translators.size > 1) {
+            while (isActive) {
+                delay(3500)
+                currentIndex = (currentIndex + 1) % translators.size
+            }
+        }
+    }
+    
+    val currentTranslator = translators.getOrElse(currentIndex) { translators.first() }
+    val githubUrl = "https://github.com/${currentTranslator.githubUsername}"
     
     Card(
         modifier = Modifier
@@ -540,10 +578,7 @@ private fun CompactContributorCard(
             },
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(
-            containerColor = if (contributor.isHighlighted)
-                MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.5f)
-            else
-                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
         )
     ) {
         Column(
@@ -556,12 +591,9 @@ private fun CompactContributorCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                GithubAvatar(
-                    username = contributor.githubUsername,
-                    modifier = Modifier.size(36.dp),
-                    iconSize = 20.dp,
-                    shape = MaterialTheme.shapes.medium,
-                    isHighlighted = contributor.isHighlighted
+                StackedAvatars(
+                    translators = translators,
+                    currentIndex = currentIndex
                 )
                 Icon(
                     imageVector = Icons.Default.OpenInNew,
@@ -573,32 +605,106 @@ private fun CompactContributorCard(
             
             Spacer(modifier = Modifier.height(8.dp))
             
-            Text(
-                text = contributor.name,
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            
-            Text(
-                text = "@${contributor.githubUsername}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+            AnimatedContent(
+                targetState = currentTranslator,
+                transitionSpec = {
+                    (slideInVertically { height -> height } + fadeIn(animationSpec = tween(300)))
+                        .togetherWith(slideOutVertically { height -> -height } + fadeOut(animationSpec = tween(300)))
+                },
+                label = "TranslatorInfoAnimation"
+            ) { target ->
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = target.name,
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        text = "@${target.githubUsername}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
             
             Spacer(modifier = Modifier.height(2.dp))
             
             Text(
-                text = contributor.contribution,
+                text = entry.language,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
+        }
+    }
+}
+
+@Composable
+private fun StackedAvatars(
+    translators: List<Translator>,
+    currentIndex: Int,
+    modifier: Modifier = Modifier
+) {
+    val count = translators.size
+    val avatarSize = 36.dp
+    val stepSpacing = if (count <= 1) {
+        0.dp
+    } else {
+        val maxAvailableSpread = 44.dp
+        val calculated = maxAvailableSpread / (count - 1)
+        if (calculated < 18.dp) calculated else 18.dp
+    }
+    val totalWidth = avatarSize + (stepSpacing * (count - 1).coerceAtLeast(0))
+
+    Box(
+        modifier = modifier
+            .height(avatarSize)
+            .width(totalWidth),
+        contentAlignment = Alignment.CenterStart
+    ) {
+        translators.forEachIndexed { index, translator ->
+            val isActive = index == currentIndex
+            val animatedScale by animateFloatAsState(
+                targetValue = if (isActive || count == 1) 1f else 0.8f,
+                animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
+                label = "avatarScale_$index"
+            )
+            val animatedAlpha by animateFloatAsState(
+                targetValue = if (isActive || count == 1) 1f else 0.65f,
+                animationSpec = tween(300),
+                label = "avatarAlpha_$index"
+            )
+            val zIndex = if (isActive) 10f else (count - index).toFloat()
+            val offsetX = stepSpacing * index
+
+            Box(
+                modifier = Modifier
+                    .offset(x = offsetX)
+                    .zIndex(zIndex)
+                    .graphicsLayer {
+                        scaleX = animatedScale
+                        scaleY = animatedScale
+                        alpha = animatedAlpha
+                    }
+                    .border(
+                        width = if (count > 1) 1.5.dp else 0.dp,
+                        color = MaterialTheme.colorScheme.surface,
+                        shape = MaterialTheme.shapes.medium
+                    )
+            ) {
+                GithubAvatar(
+                    username = translator.githubUsername,
+                    modifier = Modifier.size(avatarSize),
+                    iconSize = 20.dp,
+                    shape = MaterialTheme.shapes.medium
+                )
+            }
         }
     }
 }
