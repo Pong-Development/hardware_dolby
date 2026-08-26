@@ -6,7 +6,11 @@
 package org.lunaris.dolby.ui.components
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.LruCache
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,13 +26,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.net.HttpURLConnection
+import java.net.URL
 
 data class Contributor(
     val name: String,
@@ -459,26 +471,13 @@ private fun ContributorCard(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Surface(
+            GithubAvatar(
+                username = contributor.githubUsername,
                 modifier = Modifier.size(48.dp),
+                iconSize = 28.dp,
                 shape = MaterialTheme.shapes.medium,
-                color = if (contributor.isHighlighted)
-                    MaterialTheme.colorScheme.tertiary
-                else
-                    MaterialTheme.colorScheme.primary
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = null,
-                        tint = if (contributor.isHighlighted)
-                            MaterialTheme.colorScheme.onTertiary
-                        else
-                            MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
-            }
+                isHighlighted = contributor.isHighlighted
+            )
             
             Spacer(modifier = Modifier.width(16.dp))
             
@@ -557,26 +556,13 @@ private fun CompactContributorCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Surface(
+                GithubAvatar(
+                    username = contributor.githubUsername,
                     modifier = Modifier.size(36.dp),
+                    iconSize = 20.dp,
                     shape = MaterialTheme.shapes.medium,
-                    color = if (contributor.isHighlighted)
-                        MaterialTheme.colorScheme.tertiary
-                    else
-                        MaterialTheme.colorScheme.primary
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = Icons.Default.Person,
-                            contentDescription = null,
-                            tint = if (contributor.isHighlighted)
-                                MaterialTheme.colorScheme.onTertiary
-                            else
-                                MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.size(20.dp)
-                        )
-                    }
-                }
+                    isHighlighted = contributor.isHighlighted
+                )
                 Icon(
                     imageVector = Icons.Default.OpenInNew,
                     contentDescription = null,
@@ -616,4 +602,85 @@ private fun CompactContributorCard(
         }
     }
 }
+
+private val avatarCache = LruCache<String, Bitmap>(30)
+
+private suspend fun fetchGithubAvatar(username: String): Bitmap? = withContext(Dispatchers.IO) {
+    if (username.isBlank()) return@withContext null
+    avatarCache.get(username)?.let { return@withContext it }
+    
+    var connection: HttpURLConnection? = null
+    try {
+        val url = URL("https://github.com/$username.png?size=96")
+        connection = url.openConnection() as HttpURLConnection
+        connection.connectTimeout = 8000
+        connection.readTimeout = 10000
+        connection.instanceFollowRedirects = true
+        connection.setRequestProperty("User-Agent", "Lunaris-Dolby/1.0")
+        
+        val responseCode = connection.responseCode
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            connection.inputStream.use { input ->
+                val bitmap = BitmapFactory.decodeStream(input)
+                if (bitmap != null) {
+                    avatarCache.put(username, bitmap)
+                    bitmap
+                } else null
+            }
+        } else {
+            null
+        }
+    } catch (e: Exception) {
+        null
+    } finally {
+        connection?.disconnect()
+    }
+}
+
+@Composable
+private fun GithubAvatar(
+    username: String,
+    modifier: Modifier = Modifier,
+    iconSize: Dp = 24.dp,
+    shape: Shape = MaterialTheme.shapes.medium,
+    isHighlighted: Boolean = false
+) {
+    val bitmapState = produceState<Bitmap?>(initialValue = avatarCache.get(username), username) {
+        if (value == null) {
+            value = fetchGithubAvatar(username)
+        }
+    }
+    
+    val bitmap = bitmapState.value
+    if (bitmap != null) {
+        Image(
+            bitmap = bitmap.asImageBitmap(),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = modifier.clip(shape)
+        )
+    } else {
+        Surface(
+            modifier = modifier,
+            shape = shape,
+            color = if (isHighlighted)
+                MaterialTheme.colorScheme.tertiary
+            else
+                MaterialTheme.colorScheme.primary
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null,
+                    tint = if (isHighlighted)
+                        MaterialTheme.colorScheme.onTertiary
+                    else
+                        MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(iconSize)
+                )
+            }
+        }
+    }
+}
+
 
