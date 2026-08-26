@@ -58,13 +58,18 @@ data class Contributor(
 
 data class Translator(
     val name: String,
-    val githubUsername: String
+    val githubUsername: String = name
 )
 
 data class TranslationEntry(
     val language: String,
     val translators: List<Translator>
 )
+
+private fun t(name: String, githubUsername: String = name) = Translator(name, githubUsername)
+
+private fun translation(language: String, vararg translators: Translator) =
+    TranslationEntry(language, translators.toList())
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -103,49 +108,13 @@ fun CreditsDialog(
     )
     
     val translationEntries = listOf(
-        TranslationEntry(
-            language = "Spanish (Spain)",
-            translators = listOf(
-                Translator(name = "sm6150-dreams", githubUsername = "sm6150-dreams")
-            )
-        ),
-        TranslationEntry(
-            language = "Portuguese (Brazil)",
-            translators = listOf(
-                Translator(name = "SMarcosS", githubUsername = "S-Marcos-S")
-            )
-        ),
-        TranslationEntry(
-            language = "Indonesian",
-            translators = listOf(
-                Translator(name = "Alhaidar Latif", githubUsername = "zylhdrXP")
-            )
-        ),
-        TranslationEntry(
-            language = "Polish",
-            translators = listOf(
-                Translator(name = "Kacper", githubUsername = "ziomek3120"),
-                Translator(name = "rehork", githubUsername = "rehork")
-            )
-        ),
-        TranslationEntry(
-            language = "Traditional Chinese",
-            translators = listOf(
-                Translator(name = "DenlNister", githubUsername = "nnn950711")
-            )
-        ),
-        TranslationEntry(
-            language = "Turkish",
-            translators = listOf(
-                Translator(name = "Ümit Taylan", githubUsername = "jinetty")
-            )
-        ),
-        TranslationEntry(
-            language = "Russian",
-            translators = listOf(
-                Translator(name = "Dmitry", githubUsername = "dkpost3")
-            )
-        )
+        translation("Spanish (Spain)", t("sm6150-dreams")),
+        translation("Portuguese (Brazil)", t("SMarcosS", "S-Marcos-S")),
+        translation("Indonesian", t("Alhaidar Latif", "zylhdrXP")),
+        translation("Polish", t("Kacper", "ziomek3120"), t("rehork")),
+        translation("Traditional Chinese", t("DenlNister", "nnn950711")),
+        translation("Turkish", t("Ümit Taylan", "jinetty")),
+        translation("Russian", t("Dmitry", "dkpost3"))
     )
     
     Dialog(
