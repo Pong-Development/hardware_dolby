@@ -72,6 +72,44 @@ fun CreditsDialog(
         )
     )
     
+    val translationContributors = listOf(
+        Contributor(
+            name = "sm6150-dreams",
+            githubUsername = "sm6150-dreams",
+            contribution = "Spanish (Spain)"
+        ),
+        Contributor(
+            name = "SMarcosS",
+            githubUsername = "S-Marcos-S",
+            contribution = "Portuguese (Brazil)"
+        ),
+        Contributor(
+            name = "Alhaidar Latif",
+            githubUsername = "zylhdrXP",
+            contribution = "Indonesian"
+        ),
+        Contributor(
+            name = "Kacper",
+            githubUsername = "ziomek3120",
+            contribution = "Polish"
+        ),
+        Contributor(
+            name = "DenlNister",
+            githubUsername = "nnn950711",
+            contribution = "Traditional Chinese"
+        ),
+        Contributor(
+            name = "Ümit Taylan",
+            githubUsername = "jinetty",
+            contribution = "Turkish"
+        ),
+        Contributor(
+            name = "Dmitry",
+            githubUsername = "dkpost3",
+            contribution = "Russian"
+        )
+    )
+    
     Dialog(
         onDismissRequest = onDismiss,
         properties = DialogProperties(usePlatformDefaultWidth = false)
@@ -224,6 +262,18 @@ fun CreditsDialog(
                         )
                     }
                     items(mainContributors) { contributor ->
+                        ContributorCard(contributor = contributor)
+                    }
+                    item {
+                        Text(
+                            text = "Translation Contributors",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+                        )
+                    }
+                    items(translationContributors) { contributor ->
                         ContributorCard(contributor = contributor)
                     }
                     item {
