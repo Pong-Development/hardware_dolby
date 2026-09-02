@@ -50,21 +50,39 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
         }
     }
 
-    private fun checkEffect() {
+    private fun recreateEffect(): Boolean {
+        return try {
+            val newEffect = createDolbyEffect()
+            try {
+                dolbyEffect.release()
+            } catch (re: Exception) {
+                DolbyConstants.dlog(TAG, "Error releasing old effect: ${re.message}")
+            }
+            dolbyEffect = newEffect
+            restoreSavedProfileIfNeeded()
+            true
+        } catch (e: Exception) {
+            DolbyConstants.dlog(TAG, "Failed to recreate effect: ${e.message}")
+            false
+        }
+    }
+
+    private fun checkEffect(): Boolean {
         if (isReleased) {
             DolbyConstants.dlog(TAG, "Repository released, skipping effect check")
-            return
+            return false
         }
         
-        try {
+        return try {
             if (!dolbyEffect.hasControl()) {
                 DolbyConstants.dlog(TAG, "Lost audio effect control, recreating")
-                dolbyEffect.release()
-                dolbyEffect = createDolbyEffect()
-                restoreSavedProfileIfNeeded()
+                recreateEffect()
+            } else {
+                true
             }
         } catch (e: Exception) {
-            DolbyConstants.dlog(TAG, "Error checking effect: ${e.message}")
+            DolbyConstants.dlog(TAG, "Error checking effect: ${e.message}, recreating")
+            recreateEffect()
         }
     }
 
@@ -74,12 +92,16 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
     }
 
     private fun restoreSavedProfileIfNeeded() {
-        val savedProfile = readSavedProfile() ?: return
-        if (dolbyEffect.profile != savedProfile) {
-            dolbyEffect.profile = savedProfile
+        try {
+            val savedProfile = readSavedProfile() ?: return
+            if (dolbyEffect.profile != savedProfile) {
+                dolbyEffect.profile = savedProfile
+            }
+            restoreProfilePreset(savedProfile)
+            applyProfileSettings(savedProfile)
+        } catch (e: Exception) {
+            DolbyConstants.dlog(TAG, "Failed in restoreSavedProfileIfNeeded: ${e.message}")
         }
-        restoreProfilePreset(savedProfile)
-        applyProfileSettings(savedProfile)
     }
 
     private fun applyProfileSettings(profile: Int) {
@@ -121,11 +143,15 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
     }
 
     fun applySavedState() {
-    checkEffect()
-        val enabled = defaultPrefs.getBoolean(DolbyConstants.PREF_ENABLE, false)
-        dolbyEffect.dsOn = enabled
-        if (enabled) {
-            restoreSavedProfileIfNeeded()
+        if (!checkEffect()) return
+        try {
+            val enabled = defaultPrefs.getBoolean(DolbyConstants.PREF_ENABLE, false)
+            dolbyEffect.dsOn = enabled
+            if (enabled) {
+                restoreSavedProfileIfNeeded()
+            }
+        } catch (e: Exception) {
+            DolbyConstants.dlog(TAG, "applySavedState failed: ${e.message}")
         }
     }
 

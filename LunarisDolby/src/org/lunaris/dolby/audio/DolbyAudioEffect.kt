@@ -15,16 +15,32 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
 ) {
 
     var dsOn: Boolean
-        get() = getIntParam(EFFECT_PARAM_ENABLE) == 1
+        get() = try {
+            getIntParam(EFFECT_PARAM_ENABLE) == 1
+        } catch (e: Exception) {
+            throw IllegalStateException("Failed to get dsOn", e)
+        }
         set(value) {
-            setIntParam(EFFECT_PARAM_ENABLE, if (value) 1 else 0)
-            enabled = value
+            try {
+                setIntParam(EFFECT_PARAM_ENABLE, if (value) 1 else 0)
+                enabled = value
+            } catch (e: Exception) {
+                throw IllegalStateException("Failed to set dsOn", e)
+            }
         }
 
     var profile: Int
-        get() = getIntParam(EFFECT_PARAM_PROFILE)
+        get() = try {
+            getIntParam(EFFECT_PARAM_PROFILE)
+        } catch (e: Exception) {
+            throw IllegalStateException("Failed to get profile", e)
+        }
         set(value) {
-            setIntParam(EFFECT_PARAM_PROFILE, value)
+            try {
+                setIntParam(EFFECT_PARAM_PROFILE, value)
+            } catch (e: Exception) {
+                throw IllegalStateException("Failed to set profile", e)
+            }
         }
 
     private fun setIntParam(param: Int, value: Int) {
@@ -47,19 +63,27 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
 
     fun resetProfileSpecificSettings(profile: Int = this.profile) {
         DolbyConstants.dlog(TAG, "resetProfileSpecificSettings: profile=$profile")
-        setIntParam(EFFECT_PARAM_RESET_PROFILE_SETTINGS, profile)
+        try {
+            setIntParam(EFFECT_PARAM_RESET_PROFILE_SETTINGS, profile)
+        } catch (e: Exception) {
+            throw IllegalStateException("Failed to reset profile specific settings for profile $profile", e)
+        }
     }
 
     fun setDapParameter(param: DsParam, values: IntArray, profile: Int = this.profile) {
         DolbyConstants.dlog(TAG, "setDapParameter: profile=$profile param=$param")
-        val length = values.size
-        val buf = ByteArray((length + 4) * 4)
-        int32ToByteArray(EFFECT_PARAM_SET_PROFILE_PARAMETER, buf, 0)
-        int32ToByteArray(length + 1, buf, 4)
-        int32ToByteArray(profile, buf, 8)
-        int32ToByteArray(param.id, buf, 12)
-        int32ArrayToByteArray(values, buf, 16)
-        checkStatus(setParameter(EFFECT_PARAM_CPDP_VALUES, buf))
+        try {
+            val length = values.size
+            val buf = ByteArray((length + 4) * 4)
+            int32ToByteArray(EFFECT_PARAM_SET_PROFILE_PARAMETER, buf, 0)
+            int32ToByteArray(length + 1, buf, 4)
+            int32ToByteArray(profile, buf, 8)
+            int32ToByteArray(param.id, buf, 12)
+            int32ArrayToByteArray(values, buf, 16)
+            checkStatus(setParameter(EFFECT_PARAM_CPDP_VALUES, buf))
+        } catch (e: Exception) {
+            throw IllegalStateException("Failed to set DAP parameter $param for profile $profile", e)
+        }
     }
 
     fun setDapParameter(param: DsParam, enable: Boolean, profile: Int = this.profile) =
@@ -71,10 +95,14 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
     fun getDapParameter(param: DsParam, profile: Int = this.profile): IntArray {
         DolbyConstants.dlog(TAG, "getDapParameter: profile=$profile param=$param")
         val length = param.length
-        val buf = ByteArray((length + 2) * 4)
-        val p = (param.id shl 16) + (profile shl 8) + EFFECT_PARAM_GET_PROFILE_PARAMETER
-        checkStatus(getParameter(p, buf))
-        return byteArrayToInt32Array(buf, length)
+        return try {
+            val buf = ByteArray((length + 2) * 4)
+            val p = (param.id shl 16) + (profile shl 8) + EFFECT_PARAM_GET_PROFILE_PARAMETER
+            checkStatus(getParameter(p, buf))
+            byteArrayToInt32Array(buf, length)
+        } catch (e: Exception) {
+            throw IllegalStateException("Failed to get DAP parameter $param for profile $profile", e)
+        }
     }
 
     fun getDapParameterBool(param: DsParam, profile: Int = this.profile): Boolean =

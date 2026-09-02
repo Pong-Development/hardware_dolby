@@ -55,9 +55,13 @@ class DolbyEffectService : Service() {
 
     private val playbackCallback = object : AudioManager.AudioPlaybackCallback() {
         override fun onPlaybackConfigChanged(configs: MutableList<AudioPlaybackConfiguration>?) {
-            val isActive = configs?.any { it.isActive } == true
-            if (isActive) {
-                repository.applySavedState()
+            try {
+                val isActive = configs?.any { it.isActive } == true
+                if (isActive) {
+                    repository.applySavedState()
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to apply state on playback config change", e)
             }
         }
     }
