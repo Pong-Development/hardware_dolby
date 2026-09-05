@@ -7,6 +7,7 @@
 
     <!-- Dolby Atmos -->
     <string name="dolby_title">Dolby Atmos</string>
+    <string name="dolby_summary">Experience immersive audio</string>
     <string name="dolby_enable">Use Dolby Atmos</string>
     <string name="dolby_profile_title">Choose a profile</string>
     <string name="dolby_preset">Equalizer</string>

@@ -21,8 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -81,6 +83,31 @@ fun Modifier.squishable(
         }
 }
 
+@Composable
+fun DolbyLogo(
+    modifier: Modifier = Modifier,
+    leftColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    rightColor: Color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f)
+) {
+    Box(
+        modifier = modifier.aspectRatio(1f),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_dolby_logo_left),
+            contentDescription = stringResource(R.string.dolby_title),
+            tint = leftColor,
+            modifier = Modifier.fillMaxSize()
+        )
+        Icon(
+            painter = painterResource(R.drawable.ic_dolby_logo_right),
+            contentDescription = null,
+            tint = rightColor,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
+
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DolbyMainCard(
@@ -103,25 +130,35 @@ fun DolbyMainCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(120.dp)
+                    .height(150.dp)
                     .background(
-                        brush = Brush.linearGradient(
+                        brush = Brush.verticalGradient(
                             colors = listOf(
-                                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
-                                MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.6f)
+                                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.85f),
+                                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f),
+                                MaterialTheme.colorScheme.surfaceBright
                             )
                         )
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                AnimatedEqualizerHeader(
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    width = 140.dp,
-                    height = 64.dp,
-                    barCount = 11
+                AnimatedWaveformBanner(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(112.dp),
+                    barColor = MaterialTheme.colorScheme.primary,
+                    accentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    barCount = 56,
+                    animated = enabled
+                )
+
+                DolbyLogo(
+                    modifier = Modifier.height(60.dp),
+                    leftColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    rightColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f)
                 )
             }
-            
+
             Column(
                 modifier = Modifier.padding(20.dp)
             ) {
