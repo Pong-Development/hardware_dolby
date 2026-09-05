@@ -44,14 +44,22 @@ fun ModernDolbySettingsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { 
-                    Text(
-                        stringResource(R.string.dolby_title),
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    ) 
+                title = {
+                    Column {
+                        Text(
+                            stringResource(R.string.dolby_title),
+                            style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            stringResource(R.string.dolby_summary),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 },
+                expandedHeight = 92.dp,
                 actions = {
                     IconButton(onClick = { showCreditsDialog = true }) {
                         Icon(

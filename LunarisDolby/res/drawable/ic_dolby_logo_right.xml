@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2024-2026 Lunaris AOSP
+     SPDX-License-Identifier: Apache-2.0
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M23,4.0924L23,18.8825C19.4973,19.298 16.399,18.6968 14.3366,15.6947C12.5148,13.043 12.4594,10.2265 14.2129,7.5241C16.244,4.394 19.3953,3.7204 23,4.0924" />
+</vector>
