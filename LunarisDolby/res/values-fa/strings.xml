@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2023-25 Paranoid Android
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+
+    <!-- Dolby Atmos -->
+    <string name="dolby_title">دالبی اتموس</string>
+    <string name="dolby_enable">استفاده از دالبی اتموس</string>
+    <string name="dolby_profile_title">یک پروفایل انتخاب کنید</string>
+    <string name="dolby_preset">اکولایزر</string>
+    <string name="dolby_off">خاموش</string>
+    <string name="dolby_on">روشن</string>
+    <string name="dolby_low">کم</string>
+    <string name="dolby_medium">متوسط</string>
+    <string name="dolby_high">زیاد</string>
+    <string name="dolby_max">حداکثر</string>
+    <string name="dolby_unknown">نامشخص</string>
+    <string name="dolby_on_with_profile">روشن (%1$s)</string>
+    <string name="dolby_category_settings">تنظیم صدا</string>
+    <string name="dolby_category_adv_settings">تنظیمات پیشرفته</string>
+    <string name="dolby_adv_settings_footer">برای نمایش تنظیمات پیشرفته، پروفایل دیگری را انتخاب کنید.</string>
+    <string name="dolby_bass_enhancer">تقویت‌کننده بیس</string>
+    <string name="dolby_bass_level">سطح بیس</string>
+    <string name="dolby_bass_curve">منحنی بیس</string>
+    <string name="dolby_bass_curve_balanced">متعادل</string>
+    <string name="dolby_bass_curve_sub_boost">تقویت ساب</string>
+    <string name="dolby_bass_curve_punch">ضربه‌ای</string>
+    <string name="dolby_treble_enhancer">تقویت‌کننده تربل</string>
+    <string name="dolby_treble_level">سطح تربل</string>
+    <string name="dolby_dialogue_enhancer">تقویت‌کننده دیالوگ</string>
+    <string name="dolby_spk_virtualizer">شبیه‌ساز صدای فراگیر بلندگو</string>
+    <string name="dolby_hp_virtualizer">شبیه‌ساز صدای فراگیر هدفون</string>
+    <string name="dolby_volume_leveler">تراز کننده صدا</string>
+    <string name="dolby_bass_enhancer_summary">صداهای فرکانس پایین را برای بیس عمیق‌تر تقویت می‌کند</string>
+    <string name="dolby_treble_enhancer_summary">صداهای فرکانس بالا را برای تربل واضح‌تر تقویت می‌کند</string>
+    <string name="dolby_dialogue_enhancer_summary">وضوح صدا و گفتار را بهبود می‌بخشد</string>
+    <string name="dolby_spk_virtualizer_summary">صدای فراگیر مجازی روی بلندگوها ایجاد می‌کند</string>
+    <string name="dolby_hp_virtualizer_summary">صدای فراگیر مجازی روی هدفون‌ها ایجاد می‌کند</string>
+    <string name="dolby_volume_leveler_summary">صدا را برای تجربه شنیداری یکنواخت متعادل می‌کند</string>
+    <string name="dolby_connect_headphones">اتصال هدفون</string>
+    <string name="dolby_reset_all">بازنشانی پروفایل‌ها</string>
+    <string name="dolby_reset_all_message">این کار همه پروفایل‌ها را به تنظیمات کارخانه بازمی‌گرداند.</string>
+    <string name="dolby_reset_all_toast">همه پروفایل‌ها با موفقیت بازنشانی شدند</string>
+    <string name="dolby_hp_virtualizer_dolby_strength">قدرت شبیه‌ساز صدای فراگیر</string>
+    <string name="dolby_dialogue_enhancer_dolby_strength">قدرت تقویت‌کننده دیالوگ</string>
+    <string name="dolby_notification_listener_label">سرویس دالبی اتموس</string>
+    <string name="loading">در حال بارگذاری...</string>
+
+    <!-- Dolby profiles -->
+    <string name="dolby_profile_dynamic">پویا</string>
+    <string name="dolby_profile_video">فیلم/ویدیو</string>
+    <string name="dolby_profile_music">موسیقی</string>
+    <string name="dolby_profile_game">بازی</string>
+    <string name="dolby_profile_work">کار</string>
+    <string name="dolby_profile_casual">معمولی</string>
+    <string name="dolby_profile_mood">حالت</string>
+
+    <!-- Dolby equalizer presets -->
+    <string name="dolby_preset_default">صاف (خاموش)</string>
+    <string name="dolby_preset_rock">راک</string>
+    <string name="dolby_preset_jazz">جاز</string>
+    <string name="dolby_preset_pop">پاپ</string>
+    <string name="dolby_preset_classical">کلاسیک</string>
+    <string name="dolby_preset_hiphop">هیپ‌هاپ</string>
+    <string name="dolby_preset_blues">بلوز</string>
+    <string name="dolby_preset_electronic">الکترونیک</string>
+    <string name="dolby_preset_country">کانتری</string>
+    <string name="dolby_preset_dance">رقص</string>
+    <string name="dolby_preset_metal">متال</string>
+    <string name="dolby_preset_acoustic">آکوستیک</string>
+    <string name="dolby_preset_bass">تقویت بیس</string>
+    <string name="dolby_preset_beats">بیت‌ها</string>
+    <string name="dolby_preset_clear">واضح و شفاف</string>
+    <string name="dolby_preset_deep">عمیق</string>
+    <string name="dolby_preset_dubstep">دابستپ</string>
+    <string name="dolby_preset_hardstyle">هاردستایل</string>
+    <string name="dolby_preset_movie">فیلم</string>
+    <string name="dolby_preset_rb">آر‌اند‌بی</string>
+    <string name="dolby_preset_vocal">تقویت صدای خواننده</string>
+    <string name="dolby_preset_custom">سفارشی</string>
+    <string name="equalizer">اکولایزر</string>
+    <string name="advanced">پیشرفته</string>
+    <string name="home">خانه</string>
+
+    <!-- Dolby equalizer UI -->
+    <string name="dolby_geq_slider_label_gain">افزایش</string>
+    <string name="dolby_geq_preset">پیش‌تنظیم</string>
+    <string name="dolby_geq_preset_name">نام پیش‌تنظیم</string>
+    <string name="dolby_geq_new_preset">پیش‌تنظیم جدید</string>
+    <string name="dolby_geq_rename_preset">تغییر نام پیش‌تنظیم</string>
+    <string name="dolby_geq_delete_preset">حذف پیش‌تنظیم</string>
+    <string name="dolby_geq_delete_preset_prompt">آیا می‌خواهید این پیش‌تنظیم را حذف کنید؟</string>
+    <string name="dolby_geq_reset_gains">بازنشانی افزایش‌ها</string>
+    <string name="dolby_geq_reset_gains_prompt">آیا می‌خواهید این پیش‌تنظیم را به حالت پیش‌فرض بازگردانید؟</string>
+    <string name="dolby_geq_preset_name_exists">این نام پیش‌تنظیم قبلاً وجود دارد!</string>
+    <string name="dolby_geq_preset_name_too_long">نام پیش‌تنظیم بیش از حد طولانی است!</string>
+    <string name="band_mode_mismatch">عدم تطابق حالت باند</string>
+    <string name="frequency_response">پاسخ فرکانسی</string>
+    <string name="locked">قفل شده</string>
+    <string name="band_configuration">پیکربندی باند</string>
+    <string name="choose_equalizer_precision">دقت اکولایزر را انتخاب کنید: باندهای بیشتر = کنترل دقیق‌تر</string>
+
+    <!-- Dolby intelligent EQ -->
+    <string name="dolby_ieq">اکولایزر هوشمند</string>
+    <string name="dolby_balanced">متعادل</string>
+    <string name="dolby_warm">گرم</string>
+    <string name="dolby_detailed">دقیق</string>
+
+    <!-- Per-App Audio Profiles -->
+    <string name="app_profiles_title">پروفایل‌های صوتی هر برنامه</string>
+    <string name="app_profiles_desc">برای صدای بهینه بر اساس نوع محتوا، پروفایل‌های صوتی مختلفی به برنامه‌های جداگانه اختصاص دهید</string>
+    <string name="app_profiles_search_hint">جستجوی برنامه‌ها...</string>
+    <string name="app_profiles_no_apps">هیچ برنامه‌ای یافت نشد</string>
+    <string name="app_profiles_loading">در حال بارگذاری برنامه‌ها...</string>
+    <string name="app_profiles_clear_all">پاک کردن همه پروفایل‌های برنامه</string>
+    <string name="app_profiles_clear_all_message">این کار همه تخصیص‌های پروفایل هر برنامه را حذف می‌کند. برنامه‌ها از پروفایل پیش‌فرض استفاده خواهند کرد.</string>
+    <string name="app_profiles_manage">مدیریت پروفایل‌های برنامه</string>
+    <string name="app_profiles_default">پیش‌فرض</string>
+    <string name="app_profiles_assigned">اختصاص یافته: %1$s</string>
+    <string name="app_profiles_headphone_only">حالت فقط هدفون/بلوتوث</string>
+    <string name="app_profiles_headphone_only_description">فقط زمانی که هدفون یا دستگاه‌های صوتی بلوتوث متصل هستند، پروفایل‌ها را تغییر بده</string>
+    <string name="app_profiles_permission_required">مجوز مورد نیاز است</string>
+    <string name="app_profiles_permission_required_details">برای تغییر خودکار پروفایل‌ها بر اساس برنامه فعال، لطفاً در صفحه بعدی مجوز دسترسی به استفاده را اعطا کنید.</string>
+    <string name="app_profiles_grant_permission">اعطای مجوز</string>
+    <string name="app_profiles_search_placeholder">جستجوی برنامه‌ها...</string>
+    <string name="app_profiles_no_apps_found">هیچ برنامه‌ای یافت نشد</string>
+    <string name="app_profiles_retry">تلاش مجدد</string>
+    <string name="app_profiles_change">تغییر</string>
+    <string name="app_profiles_auto_switch">تغییر خودکار پروفایل‌ها</string>
+    <string name="app_profiles_show_toasts">نمایش پیام‌های اعلان</string>
+
+    <!-- Preset Import/Export -->
+    <string name="preset_import_export">درون‌ریزی/برون‌بری پیش‌تنظیم‌ها</string>
+    <string name="preset_export_single">برون‌بری پیش‌تنظیم</string>
+    <string name="preset_import_single">درون‌ریزی پیش‌تنظیم</string>
+    <string name="preset_export_batch">برون‌بری همه پیش‌تنظیم‌ها</string>
+    <string name="preset_import_batch">درون‌ریزی چند پیش‌تنظیم</string>
+    <string name="preset_copy_clipboard">کپی در کلیپ‌بورد</string>
+    <string name="preset_paste_clipboard">جای‌گذاری از کلیپ‌بورد</string>
+    <string name="preset_share">اشتراک‌گذاری پیش‌تنظیم</string>
+    <string name="preset_export_success">پیش‌تنظیم با موفقیت برون‌بری شد</string>
+    <string name="preset_import_success">پیش‌تنظیم با موفقیت درون‌ریزی شد</string>
+    <string name="preset_export_failed">برون‌بری ناموفق بود</string>
+    <string name="preset_import_failed">درون‌ریزی ناموفق بود</string>
+
+    <!-- Notification Access -->
+    <string name="notification_access_required">دسترسی به اعلان‌ها مورد نیاز است</string>
+    <string name="notification_access_required_desc">برای اجرای دالبی اتموس در پس‌زمینه و امکان تغییر خودکار پروفایل، دسترسی به اعلان‌ها را فعال کنید.</string>
+    <string name="enable_notification_access">فعال‌سازی دسترسی به اعلان‌ها</string>
+    <string name="enable_notification_access_desc">برای اجرای دالبی اتموس در پس‌زمینه و امکان تغییر خودکار پروفایل، دسترسی به اعلان‌ها را فعال کنید.</string>
+    <string name="notification_access_permission_details">این مجوز به دالبی اتموس اجازه می‌دهد:\n\n• به‌طور مداوم در پس‌زمینه اجرا شود\n• پروفایل‌های صوتی را به‌طور خودکار تغییر دهد\n• برنامه‌های پیش‌زمینه را نظارت کند\n\nاعلان‌های شما خوانده یا تغییر داده نخواهند شد.</string>
+    <string name="open_settings">باز کردن تنظیمات</string>
+    <string name="cancel">لغو</string>
+
+    <!--import export -->
+    <string name="import_export_presets">درون‌ریزی/برون‌بری پیش‌تنظیم‌ها</string>
+    <string name="import_presets">درون‌ریزی پیش‌تنظیم‌ها</string>
+    <string name="import_presets_description">درون‌ریزی پیش‌تنظیم‌ها از فایل‌ها یا کلیپ‌بورد</string>
+    <string name="import_single_file">تک فایل</string>
+    <string name="import_batch">دسته‌ای</string>
+    <string name="import_from_clipboard">از کلیپ‌بورد</string>
+    <string name="your_custom_presets">پیش‌تنظیم‌های سفارشی شما</string>
+    <string name="processing">در حال پردازش...</string>
+    <string name="batch_export">برون‌بری دسته‌ای</string>
+    <string name="batch_export_description">همه %1$s پیش‌تنظیم سفارشی به یک فایل واحد برون‌بری شوند؟</string>
+    <string name="export_all">برون‌بری همه</string>
+
+    <!-- Dolby mid enhancer -->
+    <string name="dolby_mid_enhancer">تقویت‌کننده میان‌باند</string>
+    <string name="dolby_mid_level">سطح میان‌باند</string>
+    <string name="dolby_mid_enhancer_summary">صداهای فرکانس میانی را برای صدای خواننده و سازها با وضوح بیشتر تقویت می‌کند</string>
+
+    <!-- Per-device state memory -->
+    <string name="device_state_memory_title">حافظه صوتی هر دستگاه</string>
+    <string name="device_state_memory_summary">تنظیمات Dolby را برای هر دستگاه صوتی (هدفون، بلندگو، بلوتوث) به خاطر بسپار</string>
+    <string name="device_state_memory_conflict_toast">پروفایل‌های هر برنامه غیرفعال شد — با حافظه هر دستگاه ناسازگار است</string>
+    <string name="device_state_memory_conflict_summary">⚠ در حین فعال بودن حافظه هر دستگاه غیرفعال است — با هم تداخل دارند</string>
+    <string name="app_profile_conflict_toast">حافظه هر دستگاه غیرفعال شد — با پروفایل‌های هر برنامه ناسازگار است</string>
+    <string name="app_profile_conflict_summary">⚠ در حین فعال بودن پروفایل‌های هر برنامه غیرفعال است — با هم تداخل دارند</string>
+    <string name="device_state_memory_section_title">حافظه دستگاه صوتی</string>
+
+    <!-- Active audio output -->
+    <string name="audio_output_active_device">خروجی صوتی فعال</string>
+    <string name="audio_output_speaker">بلندگو</string>
+    <string name="audio_output_wired">هدفون سیمی</string>
+    <string name="audio_output_bluetooth">بلوتوث</string>
+    <string name="audio_output_usb">صدای USB</string>
+    <string name="audio_output_unknown">دستگاه صوتی</string>
+
+    <!-- AutoEQ Profile -->
+    <string name="dolby_autoeq_title">اعمال پروفایل AutoEQ</string>
+    <string name="dolby_autoeq_applied">AutoEQ برای %1$s اعمال شد</string>
+    <string name="dolby_autoeq_preset_name">AutoEQ: %1$s</string>
+    <string name="dolby_autoeq_search_hint">جستجو در بیش از ۸٬۰۰۰ پروفایل...</string>
+    <string name="dolby_autoeq_currently_applied">در حال حاضر اعمال شده</string>
+    <string name="dolby_autoeq_clear">پاک کردن جستجو</string>
+    <string name="dolby_autoeq_search">جستجو</string>
+    <string name="dolby_autoeq_active">پروفایل فعال</string>
+    <string name="dolby_autoeq_selected">پروفایل انتخاب شده</string>
+</resources>
