@@ -101,6 +101,15 @@
     <string name="locked">Locked</string>
     <string name="band_configuration">Band Configuration</string>
     <string name="choose_equalizer_precision">Choose equalizer precision: more bands = finer control</string>
+    <string name="band_tuner">Band Tuner</string>
+    <string name="band_tuner_desc">Step through bands and fine-tune gain in 0.1 dB increments</string>
+    <string name="band_tuner_position">Band %1$d of %2$d</string>
+    <string name="band_tuner_label">Band %1$d · %2$s</string>
+    <string name="band_tuner_previous">Previous band</string>
+    <string name="band_tuner_next">Next band</string>
+    <string name="band_tuner_decrement">−0.1 dB</string>
+    <string name="band_tuner_reset">0 dB</string>
+    <string name="band_tuner_increment">+0.1 dB</string>
 
     <!-- Dolby intelligent EQ -->
     <string name="dolby_ieq">Intelligent equalizer</string>
