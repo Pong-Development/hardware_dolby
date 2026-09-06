@@ -49,7 +49,7 @@ fun ModernDolbySettingsScreen(
                         Text(
                             stringResource(R.string.dolby_title),
                             style = MaterialTheme.typography.headlineMedium,
-                            fontWeight = FontWeight.Bold,
+                            fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
