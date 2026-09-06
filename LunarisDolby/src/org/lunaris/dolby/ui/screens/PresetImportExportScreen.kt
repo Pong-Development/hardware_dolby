@@ -8,6 +8,7 @@ package org.lunaris.dolby.ui.screens
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -201,7 +202,7 @@ fun PresetImportExportScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = MaterialTheme.shapes.extraLarge,
                                 colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.surfaceBright
+                                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                                 )
                             ) {
                                 Column(modifier = Modifier.padding(20.dp)) {
@@ -212,7 +213,7 @@ fun PresetImportExportScreen(
                                         Surface(
                                             modifier = Modifier.size(40.dp),
                                             shape = MaterialTheme.shapes.medium,
-                                            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+                                            color = MaterialTheme.colorScheme.primaryContainer
                                         ) {
                                             Box(contentAlignment = Alignment.Center) {
                                                 Icon(
@@ -243,7 +244,7 @@ fun PresetImportExportScreen(
                                         Button(
                                             onClick = { importLauncher.launch("*/*") },
                                             modifier = Modifier.weight(1f),
-                                            shape = MaterialTheme.shapes.medium,
+                                            shape = MaterialTheme.shapes.large,
                                             colors = ButtonDefaults.buttonColors(
                                                 containerColor = MaterialTheme.colorScheme.primary,
                                                 contentColor = MaterialTheme.colorScheme.onPrimary
@@ -256,7 +257,7 @@ fun PresetImportExportScreen(
                                         Button(
                                             onClick = { batchImportLauncher.launch("*/*") },
                                             modifier = Modifier.weight(1f),
-                                            shape = MaterialTheme.shapes.medium,
+                                            shape = MaterialTheme.shapes.large,
                                             colors = ButtonDefaults.buttonColors(
                                                 containerColor = MaterialTheme.colorScheme.primary,
                                                 contentColor = MaterialTheme.colorScheme.onPrimary
@@ -296,9 +297,13 @@ fun PresetImportExportScreen(
                                             }
                                         },
                                         modifier = Modifier.fillMaxWidth(),
-                                        shape = MaterialTheme.shapes.medium,
+                                        shape = MaterialTheme.shapes.large,
                                         colors = ButtonDefaults.outlinedButtonColors(
                                             contentColor = MaterialTheme.colorScheme.primary
+                                        ),
+                                        border = BorderStroke(
+                                            1.dp,
+                                            MaterialTheme.colorScheme.outlineVariant
                                         )
                                     ) {
                                         Icon(Icons.Default.ContentPaste, contentDescription = null)
@@ -389,9 +394,9 @@ fun PresetImportExportScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Surface(
-                        shape = MaterialTheme.shapes.large,
-                        color = MaterialTheme.colorScheme.surface,
-                        tonalElevation = 8.dp
+                        shape = MaterialTheme.shapes.extraLarge,
+                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        contentColor = MaterialTheme.colorScheme.onSurface
                     ) {
                         Column(
                             modifier = Modifier.padding(24.dp),
@@ -417,31 +422,43 @@ fun PresetImportExportScreen(
         AlertDialog(
             onDismissRequest = { showBatchExport = false },
             icon = {
-                Icon(
-                    Icons.Default.FileDownload,
-                    contentDescription = null,
-                    modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
+                Surface(
+                    modifier = Modifier.size(56.dp),
+                    shape = MaterialTheme.shapes.large,
+                    color = MaterialTheme.colorScheme.primaryContainer
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            Icons.Default.FileDownload,
+                            contentDescription = null,
+                            modifier = Modifier.size(28.dp),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+                }
             },
-            title = { 
+            title = {
                 Text(
                     stringResource(R.string.batch_export),
                     color = MaterialTheme.colorScheme.onSurface
-                ) 
+                )
             },
-            text = { 
+            text = {
                 Text(
                     stringResource(R.string.batch_export_description, presetCount),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
-                ) 
+                )
             },
             confirmButton = {
                 Button(
                     onClick = {
                         batchExportLauncher.launch("dolby_presets_backup.ldp")
                     },
-                    shape = MaterialTheme.shapes.medium
+                    shape = MaterialTheme.shapes.large,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
                 ) {
                     Text(stringResource(R.string.export_all))
                 }
@@ -449,12 +466,19 @@ fun PresetImportExportScreen(
             dismissButton = {
                 TextButton(
                     onClick = { showBatchExport = false },
-                    shape = MaterialTheme.shapes.medium
+                    shape = MaterialTheme.shapes.large,
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 ) {
                     Text(stringResource(R.string.cancel))
                 }
             },
-            shape = MaterialTheme.shapes.extraLarge
+            shape = MaterialTheme.shapes.extraLarge,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            iconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onSurface,
+            textContentColor = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
     
@@ -492,7 +516,7 @@ private fun PresetExportCard(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceBright
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         )
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

@@ -60,8 +60,10 @@ fun NotificationListenerPermissionCard(
             modifier = modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.extraLarge,
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.errorContainer
-            )
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(
@@ -70,7 +72,7 @@ fun NotificationListenerPermissionCard(
                 ) {
                     Surface(
                         modifier = Modifier.size(40.dp),
-                        shape = MaterialTheme.shapes.medium,
+                        shape = MaterialTheme.shapes.large,
                         color = MaterialTheme.colorScheme.error
                     ) {
                         Box(contentAlignment = Alignment.Center) {
@@ -99,7 +101,7 @@ fun NotificationListenerPermissionCard(
                 Button(
                     onClick = { showPermissionDialog = true },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = MaterialTheme.shapes.medium,
+                    shape = MaterialTheme.shapes.large,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error,
                         contentColor = MaterialTheme.colorScheme.onError
@@ -121,14 +123,22 @@ fun NotificationListenerPermissionCard(
         AlertDialog(
             onDismissRequest = { showPermissionDialog = false },
             icon = {
-                Icon(
-                    Icons.Default.NotificationsActive,
-                    contentDescription = null,
-                    modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
+                Surface(
+                    modifier = Modifier.size(56.dp),
+                    shape = MaterialTheme.shapes.large,
+                    color = MaterialTheme.colorScheme.primaryContainer
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            Icons.Default.NotificationsActive,
+                            contentDescription = null,
+                            modifier = Modifier.size(28.dp),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+                }
             },
-            title = { 
+            title = {
                 Text(
                     stringResource(R.string.enable_notification_access),
                     style = MaterialTheme.typography.titleLarge,
@@ -149,7 +159,11 @@ fun NotificationListenerPermissionCard(
                         openNotificationListenerSettings(context)
                         showPermissionDialog = false
                     },
-                    shape = MaterialTheme.shapes.medium
+                    shape = MaterialTheme.shapes.large,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
                 ) {
                     Text(stringResource(R.string.open_settings))
                 }
@@ -157,12 +171,19 @@ fun NotificationListenerPermissionCard(
             dismissButton = {
                 TextButton(
                     onClick = { showPermissionDialog = false },
-                    shape = MaterialTheme.shapes.medium
+                    shape = MaterialTheme.shapes.large,
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 ) {
                     Text(stringResource(R.string.cancel))
                 }
             },
-            shape = MaterialTheme.shapes.extraLarge
+            shape = MaterialTheme.shapes.extraLarge,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            iconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onSurface,
+            textContentColor = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

@@ -86,8 +86,8 @@ fun Modifier.squishable(
 @Composable
 fun DolbyLogo(
     modifier: Modifier = Modifier,
-    leftColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    rightColor: Color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f)
+    leftColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    rightColor: Color = MaterialTheme.colorScheme.primary
 ) {
     Box(
         modifier = modifier.aspectRatio(1f),
@@ -122,7 +122,7 @@ fun DolbyMainCard(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.extraLarge,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceBright
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
@@ -134,9 +134,9 @@ fun DolbyMainCard(
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.85f),
-                                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f),
-                                MaterialTheme.colorScheme.surfaceBright
+                                MaterialTheme.colorScheme.primaryContainer,
+                                MaterialTheme.colorScheme.secondaryContainer,
+                                MaterialTheme.colorScheme.surfaceContainerLow
                             )
                         )
                     ),
@@ -147,15 +147,15 @@ fun DolbyMainCard(
                         .fillMaxWidth()
                         .height(112.dp),
                     barColor = MaterialTheme.colorScheme.primary,
-                    accentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    accentColor = MaterialTheme.colorScheme.tertiary,
                     barCount = 56,
                     animated = enabled
                 )
 
                 DolbyLogo(
                     modifier = Modifier.height(60.dp),
-                    leftColor = MaterialTheme.colorScheme.primaryContainer,
-                    rightColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f)
+                    leftColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    rightColor = MaterialTheme.colorScheme.primary
                 )
             }
 
@@ -243,8 +243,9 @@ fun ModernSettingsCard(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.extraLarge,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceBright
-        )
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -254,7 +255,7 @@ fun ModernSettingsCard(
                 Surface(
                     modifier = Modifier.size(40.dp),
                     shape = MaterialTheme.shapes.medium,
-                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.primaryContainer
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
@@ -294,14 +295,28 @@ fun ModernSettingSwitch(
     val haptic = rememberHapticFeedback()
     val scope = rememberCoroutineScope()
     
+    val containerColor by animateColorAsState(
+        targetValue = if (checked)
+            MaterialTheme.colorScheme.secondaryContainer
+        else
+            MaterialTheme.colorScheme.surfaceContainerHigh,
+        animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
+        label = "switch_row_container"
+    )
+    val titleColor = if (checked)
+        MaterialTheme.colorScheme.onSecondaryContainer
+    else
+        MaterialTheme.colorScheme.onSurface
+    val subtitleColor = if (checked)
+        MaterialTheme.colorScheme.onSecondaryContainer
+    else
+        MaterialTheme.colorScheme.onSurfaceVariant
+
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .clip(MaterialTheme.shapes.large),
-        color = if (checked) 
-            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
-        else 
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
+            .clip(if (checked) MaterialTheme.shapes.extraLarge else MaterialTheme.shapes.large),
+        color = containerColor
     ) {
         Row(
             modifier = Modifier
@@ -319,25 +334,22 @@ fun ModernSettingSwitch(
                         imageVector = it,
                         contentDescription = null,
                         modifier = Modifier.size(24.dp),
-                        tint = if (checked) 
-                            MaterialTheme.colorScheme.primary 
-                        else 
-                            MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = titleColor
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                 }
-                
+
                 Column {
                     Text(
                         text = title,
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = titleColor
                     )
                     Text(
                         text = subtitle,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = subtitleColor
                     )
                 }
             }
@@ -437,7 +449,9 @@ fun ModernSettingSlider(
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
                 activeTrackColor = MaterialTheme.colorScheme.primary,
-                inactiveTrackColor = MaterialTheme.colorScheme.surfaceVariant
+                activeTickColor = MaterialTheme.colorScheme.onPrimary,
+                inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer,
+                inactiveTickColor = MaterialTheme.colorScheme.onSecondaryContainer
             )
         )
     }
@@ -493,7 +507,8 @@ fun ModernSettingSelector(
                         expanded = true 
                     },
                     shape = MaterialTheme.shapes.small,
-                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -502,13 +517,13 @@ fun ModernSettingSelector(
                         Text(
                             text = label,
                             style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Icon(
                             imageVector = Icons.Default.ArrowDropDown,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurface
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     }
                 }
@@ -639,14 +654,19 @@ private fun IeqTile(
         color = if (isSelected)
             MaterialTheme.colorScheme.primaryContainer
         else
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+            MaterialTheme.colorScheme.surfaceContainerHigh,
+        contentColor = if (isSelected)
+            MaterialTheme.colorScheme.onPrimaryContainer
+        else
+            MaterialTheme.colorScheme.onSurface,
         shape = if (isSelected)
             MaterialTheme.shapes.extraLarge
         else
             MaterialTheme.shapes.large,
         border = if (isSelected)
             BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
-        else null
+        else
+            BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Row(
             modifier = Modifier
@@ -664,7 +684,7 @@ private fun IeqTile(
                 color = if (isSelected)
                     MaterialTheme.colorScheme.primary
                 else
-                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.1f)
+                    MaterialTheme.colorScheme.surfaceContainerHighest
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
@@ -705,32 +725,44 @@ fun ModernConfirmDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         icon = {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                modifier = Modifier.size(32.dp),
-                tint = MaterialTheme.colorScheme.primary
-            )
+            Surface(
+                modifier = Modifier.size(56.dp),
+                shape = MaterialTheme.shapes.large,
+                color = MaterialTheme.colorScheme.primaryContainer
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(28.dp),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
+            }
         },
-        title = { 
+        title = {
             Text(
                 title,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
-            ) 
+            )
         },
-        text = { 
+        text = {
             Text(
                 message,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
-            ) 
+            )
         },
         confirmButton = {
             Button(
                 onClick = onConfirm,
-                shape = MaterialTheme.shapes.medium
+                shape = MaterialTheme.shapes.large,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                )
             ) {
                 Text(stringResource(android.R.string.yes))
             }
@@ -738,11 +770,18 @@ fun ModernConfirmDialog(
         dismissButton = {
             TextButton(
                 onClick = onDismiss,
-                shape = MaterialTheme.shapes.medium
+                shape = MaterialTheme.shapes.large,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             ) {
                 Text(stringResource(android.R.string.no))
             }
         },
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        iconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        titleContentColor = MaterialTheme.colorScheme.onSurface,
+        textContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         shape = MaterialTheme.shapes.extraLarge
     )
 }
