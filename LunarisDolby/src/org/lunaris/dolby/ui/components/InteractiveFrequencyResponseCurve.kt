@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
@@ -39,28 +38,33 @@ fun InteractiveFrequencyResponseCurve(
     isEditable: Boolean = true
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
-    val surfaceColor = MaterialTheme.colorScheme.surfaceVariant
-    val onSurfaceColor = MaterialTheme.colorScheme.onSurface
+    val onSurfaceVariantColor = MaterialTheme.colorScheme.onSurfaceVariant
     val secondaryColor = MaterialTheme.colorScheme.secondary
     val primaryContainerColor = MaterialTheme.colorScheme.primaryContainer
+    val onPrimaryContainerColor = MaterialTheme.colorScheme.onPrimaryContainer
     val errorColor = MaterialTheme.colorScheme.error
     val surfaceContainerHighest = MaterialTheme.colorScheme.surfaceContainerHighest
+
+    // Canvas ink follows the container the curve sits on, so the plot stays legible
+    // in both the active (primary container) and idle (surface container) states.
+    val plotInkColor = if (isActive) onPrimaryContainerColor else onSurfaceVariantColor
+    val curveColor = if (isActive) primaryColor else secondaryColor
     
     val backgroundColor = if (isActive) {
-        primaryContainerColor.copy(alpha = 0.4f)
+        primaryContainerColor
     } else {
-        surfaceContainerHighest.copy(alpha = 0.3f)
+        surfaceContainerHighest
     }
-    
+
     val borderColor = if (isActive) {
         primaryColor
     } else if (!isEditable) {
-        errorColor.copy(alpha = 0.5f)
+        errorColor
     } else {
-        Color.Transparent
+        MaterialTheme.colorScheme.outlineVariant
     }
     
-    val borderWidth = if (isActive) 2.dp else if (!isEditable) 1.dp else 0.dp
+    val borderWidth = if (isActive) 2.dp else 1.dp
     
     var draggedIndex by remember { mutableStateOf<Int?>(null) }
     var controlPoints by remember { mutableStateOf(bandGains.map { it.gain }) }
@@ -146,33 +150,22 @@ fun InteractiveFrequencyResponseCurve(
             val height = size.height
             val centerY = height / 2
             
-            val gridColor = if (isActive) {
-                surfaceColor.copy(alpha = 0.4f)
-            } else {
-                surfaceColor.copy(alpha = 0.3f)
-            }
-            
-            val gridVerticalColor = if (isActive) {
-                surfaceColor.copy(alpha = 0.3f)
-            } else {
-                surfaceColor.copy(alpha = 0.2f)
-            }
-            
+            // Grid and axis are ink on the container, so alpha is used for
+            // hierarchy between them rather than to fake a colour role.
+            val gridColor = plotInkColor.copy(alpha = 0.18f)
+            val gridVerticalColor = plotInkColor.copy(alpha = 0.12f)
+
             drawLine(
-                color = if (isActive) {
-                    surfaceColor.copy(alpha = 0.7f)
-                } else {
-                    surfaceColor.copy(alpha = 0.5f)
-                },
+                color = plotInkColor.copy(alpha = 0.5f),
                 start = Offset(0f, centerY),
                 end = Offset(width, centerY),
                 strokeWidth = 3f
             )
-            
+
             for (i in 1..4) {
                 val y = (height / 5) * i
                 drawLine(
-                    color = gridColor.copy(alpha = 0.3f),
+                    color = gridColor,
                     start = Offset(0f, y),
                     end = Offset(width, y),
                     strokeWidth = 1f
@@ -217,7 +210,7 @@ fun InteractiveFrequencyResponseCurve(
                 
                 drawPath(
                     path = path,
-                    color = if (isActive) primaryColor else primaryColor.copy(alpha = 0.8f),
+                    color = curveColor,
                     style = Stroke(width = if (isActive) 5f else 4f)
                 )
                 
@@ -230,18 +223,13 @@ fun InteractiveFrequencyResponseCurve(
                 
                 drawPath(
                     path = fillPath,
+                    // Gradient fade under the curve - alpha is the effect here,
+                    // not a substitute for a container role.
                     brush = Brush.verticalGradient(
-                        colors = if (isActive) {
-                            listOf(
-                                primaryColor.copy(alpha = 0.4f),
-                                primaryColor.copy(alpha = 0.08f)
-                            )
-                        } else {
-                            listOf(
-                                primaryColor.copy(alpha = 0.3f),
-                                primaryColor.copy(alpha = 0.05f)
-                            )
-                        }
+                        colors = listOf(
+                            curveColor.copy(alpha = if (isActive) 0.4f else 0.28f),
+                            curveColor.copy(alpha = 0.04f)
+                        )
                     )
                 )
                 
@@ -255,20 +243,22 @@ fun InteractiveFrequencyResponseCurve(
                     
                     if (isBeingDragged) {
                         drawCircle(
-                            color = primaryColor.copy(alpha = 0.3f),
+                            color = curveColor.copy(alpha = 0.3f),
                             radius = 24f,
                             center = Offset(x, y)
                         )
                     }
-                    
+
+                    // Ring in the container colour so the handle reads as cut out
+                    // of the plot rather than painted white on top of it.
                     drawCircle(
-                        color = Color.White,
+                        color = backgroundColor,
                         radius = pointRadius,
                         center = Offset(x, y)
                     )
-                    
+
                     drawCircle(
-                        color = if (isActive) primaryColor else primaryColor.copy(alpha = 0.8f),
+                        color = curveColor,
                         radius = pointRadius - 2f,
                         center = Offset(x, y)
                     )
@@ -291,11 +281,7 @@ fun InteractiveFrequencyResponseCurve(
                         "${bandGain.frequency}"
                     },
                     style = MaterialTheme.typography.labelSmall,
-                    color = if (isActive) {
-                        onSurfaceColor.copy(alpha = 0.8f)
-                    } else {
-                        onSurfaceColor.copy(alpha = 0.7f)
-                    },
+                    color = plotInkColor,
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -311,11 +297,7 @@ fun InteractiveFrequencyResponseCurve(
             Text(
                 text = "+15",
                 style = MaterialTheme.typography.labelSmall,
-                color = if (isActive) {
-                    secondaryColor
-                } else {
-                    secondaryColor.copy(alpha = 0.8f)
-                },
+                color = plotInkColor,
                 fontSize = 10.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(vertical = 12.dp)
@@ -323,11 +305,7 @@ fun InteractiveFrequencyResponseCurve(
             Text(
                 text = "0",
                 style = MaterialTheme.typography.labelSmall,
-                color = if (isActive) {
-                    secondaryColor
-                } else {
-                    secondaryColor.copy(alpha = 0.8f)
-                },
+                color = plotInkColor,
                 fontSize = 10.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(vertical = 12.dp)
@@ -335,11 +313,7 @@ fun InteractiveFrequencyResponseCurve(
             Text(
                 text = "-15",
                 style = MaterialTheme.typography.labelSmall,
-                color = if (isActive) {
-                    secondaryColor
-                } else {
-                    secondaryColor.copy(alpha = 0.8f)
-                },
+                color = plotInkColor,
                 fontSize = 10.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(vertical = 12.dp)

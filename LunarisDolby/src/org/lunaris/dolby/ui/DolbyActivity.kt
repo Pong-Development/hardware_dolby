@@ -107,7 +107,10 @@ class DolbyActivity : ComponentActivity() {
             DolbyTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.surface
+                    // Matches the Scaffold container the screens paint, so no
+                    // seam shows behind system bars or during transitions.
+                    color = MaterialTheme.colorScheme.surfaceContainer,
+                    contentColor = MaterialTheme.colorScheme.onSurface
                 ) {
                     DolbyNavHost(
                         dolbyViewModel = dolbyViewModel,
