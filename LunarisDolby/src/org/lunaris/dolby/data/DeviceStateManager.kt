@@ -118,24 +118,6 @@ class DeviceStateManager(private val context: Context) {
             repository.setDolbyEnabled(enabled)
             repository.setCurrentProfile(profile)
 
-            val storedBandCount = prefs.getInt(KEY_EQ_BAND_COUNT, -1)
-            val gainsStr = prefs.getString(KEY_EQ_GAINS, null)
-            if (gainsStr != null && storedBandCount > 0) {
-                val gains = gainsStr.split(",").mapNotNull { it.toIntOrNull() }
-                if (gains.size == storedBandCount) {
-                    val bandGains = gains.mapIndexed { i, g ->
-                        BandGain(
-                            frequency = DolbyRepository.BAND_FREQUENCIES_20.getOrElse(i) { i },
-                            gain = g
-                        )
-                    }
-                    repository.setEqualizerGains(profile, bandGains, BandMode.TWENTY_BAND)
-                } else {
-                    DolbyConstants.dlog(TAG,
-                        "EQ band count mismatch for $deviceKey: stored=$storedBandCount actual=${gains.size} — skipping EQ restore")
-                }
-            }
-
             repository.setIeqPreset(profile, prefs.getInt(KEY_IEQ, 0))
 
             repository.setHeadphoneVirtualizerEnabled(profile, prefs.getBoolean(KEY_HP_VIRT, false))
@@ -159,6 +141,24 @@ class DeviceStateManager(private val context: Context) {
             }
             if (repository.stereoWideningSupported) {
                 repository.setStereoWideningAmount(profile, prefs.getInt(KEY_STEREO, 32))
+            }
+
+            val storedBandCount = prefs.getInt(KEY_EQ_BAND_COUNT, -1)
+            val gainsStr = prefs.getString(KEY_EQ_GAINS, null)
+            if (gainsStr != null && storedBandCount > 0) {
+                val gains = gainsStr.split(",").mapNotNull { it.toIntOrNull() }
+                if (gains.size == storedBandCount) {
+                    val bandGains = gains.mapIndexed { i, g ->
+                        BandGain(
+                            frequency = DolbyRepository.BAND_FREQUENCIES_20.getOrElse(i) { i },
+                            gain = g
+                        )
+                    }
+                    repository.setEqualizerGains(profile, bandGains, BandMode.TWENTY_BAND)
+                } else {
+                    DolbyConstants.dlog(TAG,
+                        "EQ band count mismatch for $deviceKey: stored=$storedBandCount actual=${gains.size} — skipping EQ restore")
+                }
             }
 
             DolbyConstants.dlog(TAG,
