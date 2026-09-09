@@ -314,24 +314,11 @@ private fun ModernEqualizerContent(
             )
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                EqualizerSectionHeader(
+                    icon = Icons.Default.Visibility,
+                    title = "Equalizer View",
                     modifier = Modifier.padding(bottom = 12.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Visibility,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Equalizer View",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
+                )
                 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -606,6 +593,34 @@ private fun SlidersViewContent(
 }
 
 @Composable
+private fun EqualizerSectionHeader(
+    icon: ImageVector,
+    title: String,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.size(20.dp),
+            tint = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = if (enabled) MaterialTheme.colorScheme.onSurface
+                   else MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
 private fun BandTunerCard(
     bandGains: List<BandGain>,
     bandMode: BandMode,
@@ -632,25 +647,12 @@ private fun BandTunerCard(
         )
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            EqualizerSectionHeader(
+                icon = Icons.Default.GraphicEq,
+                title = stringResource(R.string.band_tuner),
+                enabled = enabled,
                 modifier = Modifier.padding(bottom = 4.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.GraphicEq,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = stringResource(R.string.band_tuner),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = if (enabled) MaterialTheme.colorScheme.onSurface
-                           else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+            )
 
             Text(
                 text = stringResource(R.string.band_tuner_desc),
@@ -987,24 +989,11 @@ private fun BandModeSelector(
         )
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            EqualizerSectionHeader(
+                icon = Icons.Default.Tune,
+                title = stringResource(R.string.band_configuration),
                 modifier = Modifier.padding(bottom = 12.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Tune,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = stringResource(R.string.band_configuration),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
+            )
             
             Text(
                 text = stringResource(R.string.choose_equalizer_precision),
@@ -1129,24 +1118,11 @@ fun ModernPresetSelector(
     val scope = rememberCoroutineScope()
 
     Column(modifier = modifier.padding(20.dp)) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+        EqualizerSectionHeader(
+            icon = Icons.Default.LibraryMusic,
+            title = stringResource(R.string.dolby_geq_preset),
             modifier = Modifier.padding(bottom = 12.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.LibraryMusic,
-                contentDescription = null,
-                modifier = Modifier.size(20.dp),
-                tint = MaterialTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = stringResource(R.string.dolby_geq_preset),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        }
+        )
         
         ExposedDropdownMenuBox(
             expanded = expanded,
