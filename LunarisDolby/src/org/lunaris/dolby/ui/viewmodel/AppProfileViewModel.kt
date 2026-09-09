@@ -13,6 +13,7 @@ import org.lunaris.dolby.R
 import org.lunaris.dolby.data.AppProfileManager
 import org.lunaris.dolby.domain.models.AppProfileUiState
 import org.lunaris.dolby.utils.ToastHelper
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.cancelChildren
@@ -25,7 +26,7 @@ class AppProfileViewModel(application: Application) : AndroidViewModel(applicati
     private val _uiState = MutableStateFlow<AppProfileUiState>(AppProfileUiState.Loading)
     val uiState: StateFlow<AppProfileUiState> = _uiState.asStateFlow()
     
-    private var isCleared = false
+    @Volatile private var isCleared = false
 
     init {
         DolbyConstants.dlog(TAG, "ViewModel initialized")
@@ -38,7 +39,7 @@ class AppProfileViewModel(application: Application) : AndroidViewModel(applicati
             return
         }
         
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _uiState.value = AppProfileUiState.Loading
                 val apps = appProfileManager.getInstalledApps()
@@ -60,7 +61,7 @@ class AppProfileViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun setAppProfile(packageName: String, profile: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 if (profile == -1) {
                     appProfileManager.removeAppProfile(packageName)
@@ -78,7 +79,7 @@ class AppProfileViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun removeAppProfile(packageName: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 appProfileManager.removeAppProfile(packageName)
                 ToastHelper.showToast(context, "Profile removed")
@@ -90,7 +91,7 @@ class AppProfileViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun clearAllAppProfiles() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 appProfileManager.clearAllAppProfiles()
                 ToastHelper.showToast(context, "All app profiles cleared")
