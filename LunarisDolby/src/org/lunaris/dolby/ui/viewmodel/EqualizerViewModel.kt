@@ -47,13 +47,24 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
     private val _isSearchLoading = MutableStateFlow(false)
     val isSearchLoading = _isSearchLoading.asStateFlow()
 
+    private val _autoEqReady = MutableStateFlow(false)
+
     @OptIn(kotlinx.coroutines.FlowPreview::class)
-    val filteredAutoEqList: StateFlow<List<IndexEntry>> = _searchQuery
-        .debounce(250L)
-        .map { query -> 
-            if (::autoEqRepository.isInitialized) autoEqRepository.search(query) else emptyList()
-        }
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    val filteredAutoEqList: StateFlow<List<IndexEntry>> =
+        combine(_searchQuery.debounce(250L), _autoEqReady) { query, ready -> query to ready }
+            .map { (query, ready) ->
+                if (ready && ::autoEqRepository.isInitialized) {
+                    try {
+                        autoEqRepository.search(query)
+                    } catch (e: Exception) {
+                        DolbyConstants.dlog(TAG, "AutoEQ search failed: ${e.message}")
+                        emptyList()
+                    }
+                } else {
+                    emptyList()
+                }
+            }
+            .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     init {
         DolbyConstants.dlog(TAG, "ViewModel initialized")
@@ -123,9 +134,15 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
         }
         viewModelScope.launch {
             _isSearchLoading.value = true
-            autoEqRepository.initialize()
-            _searchQuery.value = _searchQuery.value
-            _isSearchLoading.value = false
+            try {
+                autoEqRepository.initialize()
+                _autoEqReady.value = true
+            } catch (e: Exception) {
+                DolbyConstants.dlog(TAG, "Error initializing AutoEQ: ${e.message}")
+                ToastHelper.showToast(ctx, "Failed to load AutoEQ profiles")
+            } finally {
+                _isSearchLoading.value = false
+            }
         }
     }
 
@@ -136,17 +153,23 @@ class EqualizerViewModel(application: Application) : AndroidViewModel(applicatio
     fun applyAutoEqProfileNetwork(ctx: Context, entry: IndexEntry) {
         viewModelScope.launch {
             _isSearchLoading.value = true
-            val profile = autoEqRepository.getProfile(entry.id)
-            
-            if (profile != null) {
-                prefs.edit().putString("last_applied_id", entry.id).commit()
-                _currentAppliedAutoEqId.value = entry.id
-                
-                applyAutoEqProfile(profile.name, profile.graphicEq)
-            } else {
+            try {
+                val profile = autoEqRepository.getProfile(entry.id)
+
+                if (profile != null) {
+                    prefs.edit().putString("last_applied_id", entry.id).commit()
+                    _currentAppliedAutoEqId.value = entry.id
+
+                    applyAutoEqProfile(profile.name, profile.graphicEq)
+                } else {
+                    ToastHelper.showToast(ctx, "Failed to download profile for ${entry.name}")
+                }
+            } catch (e: Exception) {
+                DolbyConstants.dlog(TAG, "Error downloading AutoEQ profile: ${e.message}")
                 ToastHelper.showToast(ctx, "Failed to download profile for ${entry.name}")
+            } finally {
+                _isSearchLoading.value = false
             }
-            _isSearchLoading.value = false
         }
     }
 
