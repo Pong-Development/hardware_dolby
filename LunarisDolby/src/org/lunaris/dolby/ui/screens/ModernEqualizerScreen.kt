@@ -453,7 +453,7 @@ private fun CurveViewContent(
             }
             Text(
                 text = if (canEdit) 
-                    "Drag the control points to adjust gain (±15 dB) • ${getFrequencyRange(state.bandMode)}"
+                    "Drag the control points to adjust gain (±15 dB) • ${getFrequencyRange(state.bandGains)}"
                 else
                     "Read-only view • Band mode mismatch",
                 style = MaterialTheme.typography.bodySmall,
@@ -511,7 +511,7 @@ private fun SlidersViewContent(
                         color = MaterialTheme.colorScheme.secondaryContainer
                     ) {
                         Text(
-                            text = getFrequencyRange(state.bandMode),
+                            text = getFrequencyRange(state.bandGains),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -886,13 +886,10 @@ private fun formatGain(gain: Float): String {
     return if (rounded > 0f) "+%.1f dB".format(rounded) else "%.1f dB".format(rounded + 0f)
 }
 
-@Composable
-private fun getFrequencyRange(bandMode: BandMode): String {
-    return when (bandMode) {
-        BandMode.TEN_BAND -> "32Hz - 19.7kHz"
-        BandMode.FIFTEEN_BAND -> "32Hz - 19.7kHz"
-        BandMode.TWENTY_BAND -> "32Hz - 19.7kHz"
-    }
+private fun getFrequencyRange(bandGains: List<BandGain>): String {
+    if (bandGains.isEmpty()) return ""
+    return "${formatFrequency(bandGains.minOf { it.frequency })} - " +
+        formatFrequency(bandGains.maxOf { it.frequency })
 }
 
 @Composable
