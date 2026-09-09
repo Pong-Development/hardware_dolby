@@ -225,6 +225,7 @@ fun ModernEqualizerScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ModernEqualizerContent(
     state: EqualizerUiState.Success,
@@ -355,11 +356,14 @@ private fun ModernEqualizerContent(
             }
         }
 
+        // motionScheme is a @Composable read; AnimatedContent's transitionSpec
+        // lambda is not a composable context, so hoist the spec out here.
+        val viewTransitionSpec = MaterialTheme.motionScheme.defaultEffectsSpec<Float>()
         AnimatedContent(
             targetState = viewMode,
             transitionSpec = {
-                fadeIn(animationSpec = tween(300)) togetherWith
-                fadeOut(animationSpec = tween(300))
+                fadeIn(animationSpec = viewTransitionSpec) togetherWith
+                fadeOut(animationSpec = viewTransitionSpec)
             },
             label = "equalizer_view_transition"
         ) { mode ->
