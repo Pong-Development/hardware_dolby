@@ -5,6 +5,13 @@
 -->
 <resources>
 
+    <!-- Expressive UI -->
+    <string name="dolby_credits">Kredit</string>
+    <string name="dolby_more_options">Opsi lainnya</string>
+    <string name="dolby_save_preset">Simpan preset</string>
+    <string name="dolby_equalizer_summary">Bentuk suara Anda, frekuensi demi frekuensi</string>
+    <string name="dolby_advanced_summary">Sempurnakan detail pengalaman mendengarkan Anda</string>
+
     <!-- Dolby Atmos -->
     <string name="dolby_title">Dolby Atmos</string>
     <string name="dolby_summary">Pengalaman audio yang imersif</string>
@@ -51,6 +58,7 @@
 
     <!-- Dolby profiles -->
     <string name="dolby_profile_dynamic">Dinamis</string>
+    <string name="dolby_profile_dynamic_summary">Menyesuaikan secara otomatis dengan audio Anda</string>
     <string name="dolby_profile_video">Film/Video</string>
     <string name="dolby_profile_music">Musik</string>
     <string name="dolby_profile_game">Permainan</string>
@@ -108,6 +116,10 @@
     <string name="dolby_balanced">Seimbang</string>
     <string name="dolby_warm">Hangat</string>
     <string name="dolby_detailed">Detail</string>
+    <string name="dolby_ieq_off_summary">Gunakan profil saat ini tanpa equalizer cerdas.</string>
+    <string name="dolby_ieq_detailed_summary">Tampilkan detail halus dan kejernihan.</string>
+    <string name="dolby_ieq_balanced_summary">Jaga keseimbangan nada rendah, menengah, dan tinggi.</string>
+    <string name="dolby_ieq_warm_summary">Beri suara Anda karakter yang lebih lembut dan hangat.</string>
 
     <!-- Per-App Audio Profiles -->
     <string name="app_profiles_title">Profil Audio Per Aplikasi</string>
